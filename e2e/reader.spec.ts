@@ -163,6 +163,22 @@ test.describe("progress", () => {
     await expect(continueCard).toContainText("Jude 1");
   });
 
+  test("marks a chapter read when leaving right from its end", async ({ page }) => {
+    await page.goto("/en/john/3");
+    const chapterNav = page.getByRole("navigation", { name: "Chapter navigation" });
+    await chapterNav.scrollIntoViewIfNeeded();
+    // Well under the time the end must stay on screen to count while still reading.
+    await page.waitForTimeout(300);
+    await chapterNav.getByRole("link", { name: /Next chapter/ }).click();
+    await expect(page).toHaveURL(/\/en\/john\/4$/);
+    await page.goBack();
+    await expect(page).toHaveURL(/\/en\/john\/3$/);
+    await expect(page.getByRole("button", { name: "Mark as read" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+  });
+
   test("remembers the verse being read", async ({ page }) => {
     await page.goto("/en/psalms/119");
     await page.locator("#v80").evaluate((element) => element.scrollIntoView({ block: "start" }));
@@ -315,5 +331,29 @@ test.describe("mobile chrome", () => {
       .toBeLessThanOrEqual(0);
     for (let i = 0; i < 4; i++) await page.evaluate(() => window.scrollBy(0, -100));
     await expect.poll(() => header.evaluate((el) => el.getBoundingClientRect().top)).toBe(0);
+  });
+
+  test("keeps the bottom bar under a tap that nudges the page", async ({ page }) => {
+    test.skip(!isMobile(page), "mobile only");
+    await page.goto("/en/john/3");
+    const bar = page.getByRole("navigation", { name: "Primary" });
+    const onScreen = () =>
+      bar.evaluate((el) => el.getBoundingClientRect().top < window.innerHeight - 1);
+    const scrollBy = async (y: number) => {
+      await page.evaluate((y) => window.scrollBy(0, y), y);
+      await page.waitForTimeout(50);
+    };
+
+    for (let i = 0; i < 10; i++) await scrollBy(150);
+    await expect.poll(onScreen).toBe(false);
+    for (let i = 0; i < 3; i++) await scrollBy(-30);
+    await expect.poll(onScreen).toBe(true);
+
+    // A finger landing on the bar often drags the page a few pixels.
+    await scrollBy(20);
+    await page.waitForTimeout(300);
+    expect(await onScreen()).toBe(true);
+    await bar.getByRole("link", { name: "Previous chapter" }).tap();
+    await expect(page).toHaveURL(/\/en\/john\/2$/);
   });
 });

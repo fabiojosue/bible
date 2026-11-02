@@ -2,6 +2,7 @@
 
 import { BookOpenIcon, SearchIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { useCurrentLocation } from "@/features/bible/use-current-location";
@@ -19,11 +20,13 @@ export function AppHeader() {
   const location = useCurrentLocation();
   const tourOpen = useOnboarding((state) => state.open);
   const openSearch = useCommandPalette((state) => state.setOpen);
-  const hidden = useScrollHidden({ enabled: !!location?.chapter && !tourOpen });
+  const headerRef = useRef<HTMLElement>(null);
+  const hidden = useScrollHidden({ enabled: !!location?.chapter && !tourOpen, ref: headerRef });
   const isMac = useIsMac();
 
   return (
     <header
+      ref={headerRef}
       className={cn(
         "sticky top-0 z-40 h-14 border-b bg-background/85 backdrop-blur-md transition-transform duration-200 supports-backdrop-filter:bg-background/70 lg:translate-y-0",
         hidden && "-translate-y-full focus-within:translate-y-0",

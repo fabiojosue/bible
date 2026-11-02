@@ -99,16 +99,21 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
     let timer: number | undefined;
+    let endVisible = false;
     const observer = new IntersectionObserver(([entry]) => {
       window.clearTimeout(timer);
-      if (entry?.isIntersecting) {
-        timer = window.setTimeout(() => markRead(bookId, chapter), COMPLETE_DELAY);
-      }
+      endVisible = !!entry?.isIntersecting;
+      if (endVisible) timer = window.setTimeout(() => markRead(bookId, chapter), COMPLETE_DELAY);
     });
     observer.observe(sentinel);
+    // Leaving with the end on screen, e.g. tapping "Next chapter", also means the chapter was finished.
+    const onPageHide = () => endVisible && markRead(bookId, chapter);
+    window.addEventListener("pagehide", onPageHide);
     return () => {
       observer.disconnect();
       window.clearTimeout(timer);
+      window.removeEventListener("pagehide", onPageHide);
+      onPageHide();
     };
   }, [bookId, chapter, markRead]);
 

@@ -2,7 +2,7 @@
 
 import { ChevronLeftIcon, ChevronRightIcon, LibraryIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -31,7 +31,11 @@ export function MobileBar() {
   const location = useCurrentLocation();
   const tourOpen = useOnboarding((state) => state.open);
   const [booksOpen, setBooksOpen] = useState(false);
-  const hidden = useScrollHidden({ enabled: !!location?.chapter && !tourOpen && !booksOpen });
+  const barRef = useRef<HTMLElement>(null);
+  const hidden = useScrollHidden({
+    enabled: !!location?.chapter && !tourOpen && !booksOpen,
+    ref: barRef,
+  });
 
   const current =
     location?.chapter !== undefined
@@ -42,6 +46,7 @@ export function MobileBar() {
 
   return (
     <nav
+      ref={barRef}
       aria-label={t("Header.primaryNavigation")}
       className={cn(
         "fixed inset-x-0 bottom-0 z-40 border-t bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md transition-transform duration-200 lg:hidden",
