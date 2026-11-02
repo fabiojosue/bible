@@ -1,0 +1,7 @@
+data/
+pnpm-lock.yaml
+.next/
+src/components/ui/
+test-results/
+playwright-report/
+screenshots/

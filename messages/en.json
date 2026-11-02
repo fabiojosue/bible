@@ -1,0 +1,150 @@
+{
+  "Metadata": {
+    "siteName": "Bible",
+    "description": "Read the Bible in English and Spanish. Calm, fast, accessible, and it remembers where you left off.",
+    "chapterTitle": "{reference} · {translation}",
+    "bookTitle": "{book}"
+  },
+  "Common": {
+    "skipToContent": "Skip to content",
+    "close": "Close",
+    "home": "Home",
+    "oldTestament": "Old Testament",
+    "newTestament": "New Testament",
+    "chapter": "Chapter {number}",
+    "chapters": "{count, plural, one {# chapter} other {# chapters}}",
+    "previousChapter": "Previous chapter",
+    "nextChapter": "Next chapter"
+  },
+  "Header": {
+    "searchPlaceholder": "Search or jump to…",
+    "search": "Search",
+    "language": "Language",
+    "settings": "Reading settings",
+    "books": "Books",
+    "settingsShort": "Settings",
+    "openBooks": "Browse books",
+    "primaryNavigation": "Primary"
+  },
+  "Navigator": {
+    "label": "Books of the Bible",
+    "oldTab": "Old Testament",
+    "newTab": "New Testament",
+    "chaptersOf": "Chapters of {book}",
+    "read": "read",
+    "current": "current chapter"
+  },
+  "Reader": {
+    "chapterNavigation": "Chapter navigation",
+    "parallelLoading": "Loading parallel translation…",
+    "attribution": "{translation} · Public domain",
+    "chapterComplete": "Chapter marked as read",
+    "markRead": "Mark as read",
+    "markUnread": "Mark as unread",
+    "verse": "Verse {number}"
+  },
+  "Search": {
+    "title": "Search",
+    "description": "Type a book, chapter, or verse such as John 3:16",
+    "placeholder": "Try “John 3:16” or “Psalms 23”",
+    "empty": "No matches. Try a book name like “Genesis”.",
+    "goTo": "Go to",
+    "books": "Books",
+    "actions": "Actions",
+    "continue": "Continue reading",
+    "toggleParallel": "Toggle side-by-side English & Spanish",
+    "switchLanguage": "Leer en español",
+    "toggleTheme": "Toggle light / dark theme",
+    "replayTour": "Show the quick tour again"
+  },
+  "Settings": {
+    "title": "Reading settings",
+    "description": "Adjust the text to what feels comfortable for your eyes.",
+    "fontSize": "Text size",
+    "decrease": "Decrease text size",
+    "increase": "Increase text size",
+    "lineHeight": "Line spacing",
+    "compact": "Compact",
+    "normal": "Normal",
+    "relaxed": "Relaxed",
+    "width": "Text width",
+    "narrow": "Narrow",
+    "wide": "Wide",
+    "font": "Typeface",
+    "serif": "Serif",
+    "sans": "Sans",
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System",
+    "verseNumbers": "Show verse numbers",
+    "parallel": "Side-by-side English & Spanish",
+    "parallelHint": "Reads both translations verse by verse.",
+    "replayTour": "Show the quick tour again",
+    "resetProgress": "Reset reading progress",
+    "resetConfirm": "This clears every chapter you marked as read and your last position on this device.",
+    "resetCancel": "Cancel",
+    "resetAction": "Reset",
+    "resetDone": "Reading progress cleared"
+  },
+  "Progress": {
+    "overall": "{read} of {total} chapters read",
+    "percent": "{percent, number}% complete",
+    "bookProgress": "{read} of {total} chapters read"
+  },
+  "Home": {
+    "title": "The Bible",
+    "subtitle": "A quiet place to read, at your own pace. Your place is saved automatically on this device.",
+    "continueTitle": "Continue reading",
+    "continueCta": "Continue",
+    "lastRead": "Last read {time}",
+    "startTitle": "Where to begin",
+    "startGenesis": "From the beginning",
+    "startGenesisHint": "Genesis 1 — the story from creation",
+    "startJohn": "Meet Jesus first",
+    "startJohnHint": "John 1 — a common starting point for first-time readers",
+    "yourProgress": "Your progress",
+    "allBooks": "All books"
+  },
+  "Book": {
+    "chaptersHeading": "Chapters",
+    "start": "Start reading",
+    "continue": "Continue at chapter {chapter}"
+  },
+  "Tour": {
+    "label": "Quick tour",
+    "step": "Step {current} of {total}",
+    "skip": "Skip tour",
+    "back": "Back",
+    "next": "Next",
+    "done": "Start reading",
+    "welcomeTitle": "Welcome",
+    "welcomeBody": "This is a calm place to read the Bible. Here’s a 20-second tour of the few things worth knowing.",
+    "navigatorTitle": "Pick a book",
+    "navigatorBody": "Browse all 66 books and jump to any chapter.",
+    "searchTitle": "Jump anywhere",
+    "searchBody": "Type something like “John 3:16” or “Salmos 23”.",
+    "searchBodyDesktop": "Type something like “John 3:16”. Press Ctrl K (⌘K on Mac) anytime.",
+    "settingsTitle": "Make it comfortable",
+    "settingsBody": "Change text size, spacing and theme, or read English and Spanish side by side.",
+    "languageTitle": "English or Spanish",
+    "languageBody": "Switch languages and stay on the same chapter.",
+    "chapterNavTitle": "Turn the page",
+    "chapterNavBody": "Move to the previous or next chapter from here.",
+    "chapterNavBodyDesktop": "Use these buttons, or the ← and → keys on your keyboard.",
+    "progressTitle": "We remember your place",
+    "progressBody": "Your last verse is saved as you read, and chapters are marked read when you reach the end. Just come back anytime."
+  },
+  "Language": {
+    "en": "English",
+    "es": "Español"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "body": "That passage or page doesn’t exist.",
+    "back": "Back to home"
+  },
+  "Time": {
+    "justNow": "just now"
+  }
+}
