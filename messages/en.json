@@ -94,7 +94,9 @@
   },
   "Home": {
     "title": "The Bible",
-    "subtitle": "A quiet place to read, at your own pace. Your place is saved automatically on this device.",
+    "subtitle": "A quiet place to read, at your own pace.",
+    "savedOnDevice": "Your place is saved automatically on this device.",
+    "savedToAccount": "Your place is saved automatically and synced to every device you’re signed in on.",
     "continueTitle": "Continue reading",
     "continueCta": "Continue",
     "lastRead": "Last read {time}",

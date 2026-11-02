@@ -46,7 +46,7 @@ export function BookReadCount({ book }: { book: BookDefinition }) {
       <Progress
         value={(read / book.chapters) * 100}
         aria-hidden
-        className="absolute inset-x-3 bottom-2 h-0.5 w-auto"
+        className="absolute inset-x-3 bottom-1.5 h-0.5 w-auto"
       />
       <span className="sr-only">, {t("bookProgress", { read, total: book.chapters })}</span>
     </>

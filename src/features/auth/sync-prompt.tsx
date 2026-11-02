@@ -6,6 +6,13 @@ import { PAGE_PATHS } from "@/features/bible/routes";
 import { Link } from "@/i18n/navigation";
 import { useSession } from "./auth-client";
 
+/** Where the reader's place is kept: this device, or every device signed in to the account. */
+export function SavedWhere() {
+  const t = useTranslations("Home");
+  const { data: session } = useSession();
+  return <>{t(session ? "savedToAccount" : "savedOnDevice")}</>;
+}
+
 /** One line under the progress summary: who it syncs with, or an invitation to sign in. */
 export function SyncPrompt() {
   const t = useTranslations("Account");

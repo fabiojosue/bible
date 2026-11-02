@@ -49,6 +49,7 @@ test.describe("account sync", () => {
     await expect(device).toHaveURL(/\/en$/);
     await expect(device.getByText("1 of 1,189 chapters read")).toBeVisible();
     await expect(device.getByText(`Your progress syncs with ${email}.`)).toBeVisible();
+    await expect(device.getByText(/synced to every device you’re signed in on/)).toBeVisible();
 
     await device.getByRole("button", { name: "Account: E2E Reader" }).click();
     await device.getByRole("menuitem", { name: "Delete account" }).click();

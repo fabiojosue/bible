@@ -94,7 +94,9 @@
   },
   "Home": {
     "title": "La Biblia",
-    "subtitle": "Un lugar tranquilo para leer a tu propio ritmo. Tu posición se guarda automáticamente en este dispositivo.",
+    "subtitle": "Un lugar tranquilo para leer a tu propio ritmo.",
+    "savedOnDevice": "Tu posición se guarda automáticamente en este dispositivo.",
+    "savedToAccount": "Tu posición se guarda automáticamente y se sincroniza en todos los dispositivos donde iniciaste sesión.",
     "continueTitle": "Seguir leyendo",
     "continueCta": "Continuar",
     "lastRead": "Última lectura {time}",

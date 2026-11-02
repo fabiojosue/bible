@@ -2,7 +2,7 @@ import { ArrowRightIcon } from "lucide-react";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { SyncPrompt } from "@/features/auth/sync-prompt";
+import { SavedWhere, SyncPrompt } from "@/features/auth/sync-prompt";
 import { BOOKS, bookName, type Testament } from "@/features/bible/books";
 import { bookPath, chapterPath, PAGE_PATHS } from "@/features/bible/routes";
 import { translationForLocale } from "@/features/bible/translations";
@@ -43,7 +43,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           {translation.name}
         </p>
         <h1 className="text-4xl font-semibold tracking-tighter sm:text-5xl">{t("Home.title")}</h1>
-        <p className="max-w-prose text-pretty text-muted-foreground">{t("Home.subtitle")}</p>
+        <p className="max-w-prose text-pretty text-muted-foreground">
+          {t("Home.subtitle")} <SavedWhere />
+        </p>
       </header>
 
       <ContinueReading />
@@ -95,7 +97,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                 <li key={book.id}>
                   <Link
                     href={bookPath(book, locale)}
-                    className="relative flex min-h-12 flex-col justify-center rounded-lg border bg-card px-3 py-2 text-sm transition-colors outline-none hover:bg-accent focus-visible:ring-3 focus-visible:ring-ring/50"
+                    className="relative flex min-h-12 flex-col justify-center rounded-lg border bg-card px-3 pt-2 pb-3.5 text-sm transition-colors outline-none hover:bg-accent focus-visible:ring-3 focus-visible:ring-ring/50"
                   >
                     <span className="truncate font-medium">{bookName(book, locale)}</span>
                     <span className="text-xs text-muted-foreground">
