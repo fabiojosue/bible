@@ -143,7 +143,7 @@ function TourDialog() {
           aria-hidden
           className={cn(
             "pointer-events-none fixed z-50 transition-all duration-300 ease-out",
-            hole ? "rounded-xl ring-2 ring-ring" : "inset-0 bg-black/65",
+            hole ? "rounded-xl ring-2 ring-ring dark:bg-white/10" : "inset-0 bg-black/70",
           )}
           style={
             hole && {
@@ -151,7 +151,10 @@ function TourDialog() {
               left: hole.left,
               width: hole.width,
               height: hole.height,
-              boxShadow: "0 0 0 9999px rgb(0 0 0 / 0.65)",
+              // The glow comes first so it paints over the dimmed page. Dimming
+              // alone barely shows on the dark theme, which is already near black.
+              boxShadow:
+                "0 0 20px 4px color-mix(in oklab, var(--ring) 60%, transparent), 0 0 0 9999px rgb(0 0 0 / 0.7)",
             }
           }
         />
