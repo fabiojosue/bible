@@ -195,58 +195,80 @@
   },
   "Privacy": {
     "title": "Privacy Policy",
-    "intro": "Bible is a free website for reading the Bible, with no ads. This policy explains what information it keeps and why.",
+    "intro": "Bible (https://bible-blush-nine.vercel.app) is a free website for reading the Bible in English and Spanish, with no ads. This policy explains what information Bible collects, including the data it receives when you sign in with Google, how that information is used, shared, stored and protected, and how you can delete it.",
     "sections": [
       {
         "title": "Reading without an account",
         "paragraphs": [
-          "You can read without an account. Your reading progress and settings are then saved only in your browser’s storage on your device and are never sent to us."
+          "You can read without an account. Your reading progress and settings are then saved only in your browser’s local storage on your device and are never sent to us."
         ]
       },
       {
-        "title": "What we store when you have an account",
+        "title": "Data we collect",
         "paragraphs": [
-          "If you create an account or sign in with Google, we store your name, your email address and, with Google, your profile picture.",
-          "If you sign up with an email and password, we store your password only as a secure one-way hash; nobody can read it.",
-          "To sync your reading between devices, we store which chapters you have marked as read and your last reading position, with the time of each change.",
-          "To keep your account secure, we store your active sign-in sessions, including the IP address and browser type used to sign in."
+          "Account information: your name and email address. If you sign in with Google, also your Google profile picture and your Google account ID.",
+          "Password: if you sign up with an email and password, your password is stored only as a secure one-way hash; nobody, including us, can read it.",
+          "Reading progress: which chapters you have marked as read and your last reading position (book, chapter and verse), with the time of each change.",
+          "Session information: for each active sign-in, the IP address and browser type (user agent) used, and when the session expires."
         ]
       },
       {
-        "title": "How we use it",
+        "title": "Google user data",
         "paragraphs": [
-          "Only to sign you in and to sync your reading progress between your devices. We don’t show ads, we don’t sell or share your information, and we don’t use analytics or tracking."
+          "When you choose “Continue with Google”, Bible requests only the basic sign-in scopes: openid, email and profile. Through them Google shares your name, email address, profile picture and Google account ID with Bible.",
+          "Google also issues sign-in tokens for these scopes. Bible stores them encrypted with your account and does not use them to access your Google account after you sign in.",
+          "Bible does not request access to your Gmail, contacts, calendar, Drive, files or any other data in your Google account, and does not post anything on your behalf.",
+          "Bible uses this Google user data only to create and identify your account, sign you in, and show your name and picture in the account menu. It is not used for advertising, profiling, selling, or training artificial intelligence or machine learning models, and no person reads it except when you ask for help with your account or when required by law.",
+          "Bible’s use and transfer of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements."
         ]
       },
       {
-        "title": "Google sign-in",
+        "title": "How we use your data",
         "paragraphs": [
-          "When you sign in with Google, Google shares your name, email address and profile picture with us. We don’t request access to anything else in your Google account.",
-          "Our use of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements."
+          "We use the data above only to provide the service: to sign you in, keep your account secure, and sync your reading progress between your devices. We don’t show ads and we don’t use analytics or tracking."
+        ]
+      },
+      {
+        "title": "How we share your data",
+        "paragraphs": [
+          "We do not sell, rent or trade your data, including Google user data, and we do not share it with advertisers or data brokers.",
+          "Your data is processed only by the service providers that run the website, and only to operate it: Vercel (hosting) and Neon (database). They may not use it for any other purpose.",
+          "We may disclose information if required by law, or to protect the safety of users or the service."
+        ]
+      },
+      {
+        "title": "How we store and protect your data",
+        "paragraphs": [
+          "Account data is stored in a Neon Postgres database in the United States, and the website runs on Vercel. All connections to the website and between it and the database are encrypted (HTTPS/TLS).",
+          "Passwords are stored as one-way hashes, sign-in cookies are signed, secure and HTTP-only, and access to the database is restricted to the website itself and its maintainer."
         ]
       },
       {
         "title": "Cookies and local storage",
         "paragraphs": [
-          "We use one essential cookie to keep you signed in. Your settings and the progress on each device are kept in your browser’s local storage."
+          "We use essential cookies only to keep you signed in. Your settings and the progress on each device are kept in your browser’s local storage. There are no advertising or tracking cookies."
         ]
       },
       {
-        "title": "Where your data is stored",
+        "title": "Data retention and deletion",
         "paragraphs": [
-          "The website is hosted by Vercel, and account data is stored in a database run by Neon, both in the United States."
+          "We keep your account data, including Google user data, for as long as your account exists. Sign-in sessions expire after 60 days without use.",
+          "You can delete your account at any time from the account menu (“Delete account”). This immediately and permanently deletes your account, your Google user data, your sessions and your synced progress from our database.",
+          "You can also ask us to delete your data by writing to fabiojosue16@gmail.com; we will do so within 30 days. You can revoke Bible’s access to your Google account at any time at https://myaccount.google.com/permissions.",
+          "Progress saved in your browser stays on that device until you reset it in reading settings or clear your browser data."
         ]
       },
       {
-        "title": "Deleting your data",
+        "title": "Children",
         "paragraphs": [
-          "You can delete your account at any time from the account menu. This permanently removes your account, your sessions and your synced progress. Progress saved in your browser stays on that device until you reset it in reading settings or clear your browser data."
+          "Bible can be read by anyone without an account. Accounts are not intended for children under 13, and we do not knowingly collect their personal data."
         ]
       },
       {
-        "title": "Contact",
+        "title": "Changes and contact",
         "paragraphs": [
-          "For questions or requests about your data, write to fabiojosue16@gmail.com. If this policy changes, the date above will be updated."
+          "If this policy changes, the date above will be updated, and significant changes will be announced on the website.",
+          "For questions or requests about your data, write to fabiojosue16@gmail.com."
         ]
       }
     ]

@@ -195,58 +195,80 @@
   },
   "Privacy": {
     "title": "Política de privacidad",
-    "intro": "Biblia es un sitio web gratuito para leer la Biblia, sin anuncios. Esta política explica qué información guarda y por qué.",
+    "intro": "Biblia (https://bible-blush-nine.vercel.app) es un sitio web gratuito para leer la Biblia en inglés y español, sin anuncios. Esta política explica qué información recopila Biblia, incluidos los datos que recibe cuando inicias sesión con Google, cómo se usa, comparte, guarda y protege esa información, y cómo puedes borrarla.",
     "sections": [
       {
         "title": "Leer sin una cuenta",
         "paragraphs": [
-          "Puedes leer sin una cuenta. En ese caso, tu progreso y tus ajustes se guardan solo en el almacenamiento de tu navegador, en tu dispositivo, y nunca se nos envían."
+          "Puedes leer sin una cuenta. En ese caso, tu progreso y tus ajustes se guardan solo en el almacenamiento local de tu navegador, en tu dispositivo, y nunca se nos envían."
         ]
       },
       {
-        "title": "Qué guardamos cuando tienes una cuenta",
+        "title": "Datos que recopilamos",
         "paragraphs": [
-          "Si creas una cuenta o inicias sesión con Google, guardamos tu nombre, tu correo electrónico y, con Google, tu foto de perfil.",
-          "Si te registras con correo y contraseña, guardamos tu contraseña solo como un hash seguro de un solo sentido; nadie puede leerla.",
-          "Para sincronizar tu lectura entre dispositivos, guardamos qué capítulos marcaste como leídos y tu última posición de lectura, con la hora de cada cambio.",
-          "Para mantener segura tu cuenta, guardamos tus sesiones activas, incluida la dirección IP y el tipo de navegador con que iniciaste sesión."
+          "Información de la cuenta: tu nombre y tu correo electrónico. Si inicias sesión con Google, también tu foto de perfil de Google y el identificador de tu cuenta de Google.",
+          "Contraseña: si te registras con correo y contraseña, tu contraseña se guarda solo como un hash seguro de un solo sentido; nadie, ni siquiera nosotros, puede leerla.",
+          "Progreso de lectura: qué capítulos marcaste como leídos y tu última posición de lectura (libro, capítulo y versículo), con la hora de cada cambio.",
+          "Información de sesión: para cada inicio de sesión activo, la dirección IP y el tipo de navegador (user agent) usados, y cuándo vence la sesión."
         ]
       },
       {
-        "title": "Cómo la usamos",
+        "title": "Datos de usuario de Google",
         "paragraphs": [
-          "Solo para iniciar tu sesión y sincronizar tu progreso de lectura entre tus dispositivos. No mostramos anuncios, no vendemos ni compartimos tu información y no usamos analíticas ni rastreo."
+          "Cuando eliges «Continuar con Google», Biblia solicita solo los permisos básicos de inicio de sesión: openid, email y profile. Con ellos Google comparte con Biblia tu nombre, tu correo electrónico, tu foto de perfil y el identificador de tu cuenta de Google.",
+          "Google también emite tokens de inicio de sesión para estos permisos. Biblia los guarda cifrados junto con tu cuenta y no los usa para acceder a tu cuenta de Google después de que inicias sesión.",
+          "Biblia no solicita acceso a tu Gmail, contactos, calendario, Drive, archivos ni a ningún otro dato de tu cuenta de Google, y no publica nada en tu nombre.",
+          "Biblia usa estos datos de usuario de Google solo para crear e identificar tu cuenta, iniciar tu sesión y mostrar tu nombre y foto en el menú de la cuenta. No se usan para publicidad, perfiles, venta ni para entrenar modelos de inteligencia artificial o aprendizaje automático, y ninguna persona los lee salvo cuando pides ayuda con tu cuenta o cuando la ley lo exige.",
+          "El uso y la transferencia que hace Biblia de la información recibida de las API de Google cumplen la Política de Datos de Usuario de los Servicios de API de Google, incluidos los requisitos de Uso Limitado."
         ]
       },
       {
-        "title": "Inicio de sesión con Google",
+        "title": "Cómo usamos tus datos",
         "paragraphs": [
-          "Cuando inicias sesión con Google, Google nos comparte tu nombre, tu correo electrónico y tu foto de perfil. No pedimos acceso a nada más de tu cuenta de Google.",
-          "El uso que hacemos de la información recibida de las API de Google cumple la Política de Datos de Usuario de los Servicios de API de Google, incluidos los requisitos de Uso Limitado."
+          "Usamos los datos anteriores solo para prestar el servicio: iniciar tu sesión, mantener segura tu cuenta y sincronizar tu progreso de lectura entre tus dispositivos. No mostramos anuncios y no usamos analíticas ni rastreo."
+        ]
+      },
+      {
+        "title": "Cómo compartimos tus datos",
+        "paragraphs": [
+          "No vendemos, alquilamos ni intercambiamos tus datos, incluidos los datos de usuario de Google, y no los compartimos con anunciantes ni con intermediarios de datos.",
+          "Tus datos solo los procesan los proveedores que hacen funcionar el sitio, y solo para operarlo: Vercel (alojamiento) y Neon (base de datos). No pueden usarlos para ningún otro fin.",
+          "Podemos revelar información si la ley lo exige o para proteger la seguridad de los usuarios o del servicio."
+        ]
+      },
+      {
+        "title": "Cómo guardamos y protegemos tus datos",
+        "paragraphs": [
+          "Los datos de las cuentas se guardan en una base de datos Postgres de Neon en Estados Unidos, y el sitio funciona en Vercel. Todas las conexiones con el sitio, y entre el sitio y la base de datos, están cifradas (HTTPS/TLS).",
+          "Las contraseñas se guardan como hashes de un solo sentido, las cookies de sesión están firmadas y son seguras y HTTP-only, y el acceso a la base de datos está restringido al propio sitio y a su responsable."
         ]
       },
       {
         "title": "Cookies y almacenamiento local",
         "paragraphs": [
-          "Usamos una única cookie esencial para mantener tu sesión iniciada. Tus ajustes y el progreso de cada dispositivo se guardan en el almacenamiento local de tu navegador."
+          "Usamos cookies esenciales solo para mantener tu sesión iniciada. Tus ajustes y el progreso de cada dispositivo se guardan en el almacenamiento local de tu navegador. No hay cookies de publicidad ni de rastreo."
         ]
       },
       {
-        "title": "Dónde se guardan tus datos",
+        "title": "Conservación y eliminación de datos",
         "paragraphs": [
-          "El sitio está alojado en Vercel y los datos de las cuentas se guardan en una base de datos de Neon, ambos en Estados Unidos."
+          "Conservamos los datos de tu cuenta, incluidos los datos de usuario de Google, mientras tu cuenta exista. Las sesiones vencen tras 60 días sin uso.",
+          "Puedes borrar tu cuenta en cualquier momento desde el menú de la cuenta («Borrar cuenta»). Esto elimina de inmediato y para siempre tu cuenta, tus datos de usuario de Google, tus sesiones y tu progreso sincronizado de nuestra base de datos.",
+          "También puedes pedirnos que borremos tus datos escribiendo a fabiojosue16@gmail.com; lo haremos en un plazo de 30 días. Puedes revocar el acceso de Biblia a tu cuenta de Google en cualquier momento en https://myaccount.google.com/permissions.",
+          "El progreso guardado en tu navegador se queda en ese dispositivo hasta que lo restablezcas en los ajustes de lectura o borres los datos del navegador."
         ]
       },
       {
-        "title": "Borrar tus datos",
+        "title": "Menores",
         "paragraphs": [
-          "Puedes borrar tu cuenta en cualquier momento desde el menú de la cuenta. Esto elimina de forma permanente tu cuenta, tus sesiones y tu progreso sincronizado. El progreso guardado en tu navegador se queda en ese dispositivo hasta que lo restablezcas en los ajustes de lectura o borres los datos del navegador."
+          "Cualquiera puede leer Biblia sin una cuenta. Las cuentas no están pensadas para menores de 13 años, y no recopilamos a sabiendas sus datos personales."
         ]
       },
       {
-        "title": "Contacto",
+        "title": "Cambios y contacto",
         "paragraphs": [
-          "Para preguntas o solicitudes sobre tus datos, escribe a fabiojosue16@gmail.com. Si esta política cambia, se actualizará la fecha de arriba."
+          "Si esta política cambia, se actualizará la fecha de arriba, y los cambios importantes se anunciarán en el sitio.",
+          "Para preguntas o solicitudes sobre tus datos, escribe a fabiojosue16@gmail.com."
         ]
       }
     ]

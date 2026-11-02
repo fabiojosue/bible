@@ -43,6 +43,7 @@ export const auth = betterAuth({
     // email service), so linking a Google sign-in to one would let whoever
     // registered that address first share the account.
     accountLinking: { enabled: false },
+    encryptOAuthTokens: true,
   },
   user: { deleteUser: { enabled: true } },
   session: {
