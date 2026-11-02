@@ -37,6 +37,13 @@ export function parsePath(pathname: string, locale: Locale): PathLocation | unde
   return { book, chapter };
 }
 
+/** Absolute URL of the same page in another language, optionally at a verse. */
+export function localeHref(pathname: string, from: Locale, to: Locale, verse?: number): string {
+  const path = localizePath(pathname, from, to);
+  const href = path === "/" ? `/${to}` : `/${to}${path}`;
+  return verse ? `${href}#${verseAnchor(verse)}` : href;
+}
+
 /** The equivalent locale-relative pathname in another language. */
 export function localizePath(pathname: string, from: Locale, to: Locale): string {
   const location = parsePath(pathname, from);

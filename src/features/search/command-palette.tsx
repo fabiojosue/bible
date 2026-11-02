@@ -25,12 +25,13 @@ import {
 import { Kbd } from "@/components/ui/kbd";
 import { bookName, normalize } from "@/features/bible/books";
 import { formatReference, parseQuery, searchBooks } from "@/features/bible/reference";
-import { bookPath, chapterPath, localizePath } from "@/features/bible/routes";
+import { bookPath, chapterPath } from "@/features/bible/routes";
 import type { Reference } from "@/features/bible/types";
 import { useOnboarding } from "@/features/onboarding/store";
 import { useProgress } from "@/features/progress/store";
 import { requestVerseFocus } from "@/features/reader/verse-focus";
 import { useSettings } from "@/features/settings/store";
+import { useLocaleHref } from "@/features/shell/use-locale-href";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { isInsideInteractiveWidget } from "@/lib/keyboard";
@@ -53,6 +54,7 @@ export function CommandPalette() {
   const lastPosition = useProgress((state) => state.lastPosition);
   const toggleParallel = useSettings((state) => state.toggleParallel);
   const startTour = useOnboarding((state) => state.start);
+  const localeHrefFor = useLocaleHref();
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -114,7 +116,7 @@ export function CommandPalette() {
       icon: <LanguagesIcon />,
       run: () => {
         close();
-        router.replace(localizePath(pathname, locale, otherLocale), { locale: otherLocale });
+        window.location.assign(localeHrefFor(otherLocale));
       },
     },
     {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { adjacentChapter, BOOKS, bookSlug, getBookBySlug, TOTAL_CHAPTERS } from "./books";
-import { chapterPath, localizePath, parsePath } from "./routes";
+import { chapterPath, localeHref, localizePath, parsePath } from "./routes";
 
 describe("canon", () => {
   it("has 66 books and 1189 chapters", () => {
@@ -86,5 +86,11 @@ describe("paths", () => {
     expect(localizePath("/john/3", "en", "es")).toBe("/juan/3");
     expect(localizePath("/exodo", "es", "en")).toBe("/exodus");
     expect(localizePath("/", "en", "es")).toBe("/");
+  });
+
+  it("builds absolute URLs for switching language", () => {
+    expect(localeHref("/", "es", "en")).toBe("/en");
+    expect(localeHref("/juan/3", "es", "en", 16)).toBe("/en/john/3#v16");
+    expect(localeHref("/exodus", "en", "es")).toBe("/es/exodo");
   });
 });

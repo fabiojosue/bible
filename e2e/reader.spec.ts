@@ -110,8 +110,27 @@ test.describe("reading", () => {
     await page.getByRole("menuitem", { name: "Español" }).click();
     await expect(page).toHaveURL(/\/es\/juan\/3/);
     await expect(page.getByRole("heading", { level: 1, name: "Juan 3" })).toBeVisible();
-    // The previous page stays mounted (hidden) for instant back navigation.
-    await expect(page.locator("#v16:visible")).toContainText("tal manera amó Dios al mundo");
+    await expect(page.locator("#v16")).toContainText("tal manera amó Dios al mundo");
+  });
+
+  test("switches language back and forth and stays usable", async ({ page }) => {
+    let downloaded = false;
+    page.on("download", () => (downloaded = true));
+    await page.goto("/en");
+    for (const [name, url] of [
+      ["Español", /\/es$/],
+      ["English", /\/en$/],
+      ["Español", /\/es$/],
+    ] as const) {
+      await page.getByRole("button", { name: /Language|Idioma/ }).click();
+      await page.getByRole("menuitem", { name }).click();
+      await expect(page).toHaveURL(url);
+      await page.waitForSelector("html[data-hydrated]");
+    }
+    await expect(page.locator("body")).not.toHaveCSS("pointer-events", "none");
+    await page.getByRole("link", { name: /Conoce a Jesús primero/ }).click();
+    await expect(page).toHaveURL(/\/es\/juan\/1$/);
+    expect(downloaded).toBe(false);
   });
 });
 
