@@ -1,5 +1,8 @@
 allowBuilds:
   "@parcel/watcher": false
+  "@prisma/client": false
   "@swc/core": false
+  better-sqlite3: false
+  esbuild: false
   sharp: false
   unrs-resolver: false

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
+import { AccountMenu } from "@/features/auth/account-menu";
 import { useCurrentLocation } from "@/features/bible/use-current-location";
 import { useOnboarding } from "@/features/onboarding/store";
 import { useCommandPalette } from "@/features/search/store";
@@ -73,6 +74,7 @@ export function AppHeader() {
         <div className="hidden lg:block">
           <SettingsPopover />
         </div>
+        <AccountMenu className="max-lg:size-11" />
       </div>
     </header>
   );

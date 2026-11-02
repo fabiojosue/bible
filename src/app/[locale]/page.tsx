@@ -2,6 +2,7 @@ import { ArrowRightIcon } from "lucide-react";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { SyncPrompt } from "@/features/auth/sync-prompt";
 import { BOOKS, bookName, type Testament } from "@/features/bible/books";
 import { bookPath, chapterPath, PAGE_PATHS } from "@/features/bible/routes";
 import { translationForLocale } from "@/features/bible/translations";
@@ -77,6 +78,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           {t("Home.yourProgress")}
         </h2>
         <OverallProgress />
+        <SyncPrompt />
       </section>
 
       <section aria-labelledby="books-title" className="grid gap-6">

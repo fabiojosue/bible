@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { applyReaderSettings } from "@/features/settings/reader-settings";
 import { useSettings } from "@/features/settings/store";
+import { ProgressSync } from "@/features/sync/progress-sync";
 
 function ReaderSettingsSync() {
   useEffect(() => {
@@ -24,6 +25,7 @@ export function Providers({ children }: { children: ReactNode }) {
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
       <TooltipProvider delayDuration={300}>
         <ReaderSettingsSync />
+        <ProgressSync />
         {children}
         <Toaster position="top-center" />
       </TooltipProvider>

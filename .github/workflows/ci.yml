@@ -12,6 +12,23 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: bible
+          POSTGRES_PASSWORD: bible
+          POSTGRES_DB: bible
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U bible"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://bible:bible@localhost:5432/bible
+      BETTER_AUTH_SECRET: ci-only-secret-not-used-anywhere-else-0123456789
+      BETTER_AUTH_URL: http://localhost:3100
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
@@ -24,6 +41,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm format:check
       - run: pnpm test
+      - run: pnpm db:migrate
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm test:e2e

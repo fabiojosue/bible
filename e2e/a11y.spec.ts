@@ -9,6 +9,8 @@ const PAGES = [
   "/es/salmos/23",
   "/en/privacy",
   "/es/terms",
+  "/en/sign-in",
+  "/es/sign-in",
 ];
 
 for (const path of PAGES) {
