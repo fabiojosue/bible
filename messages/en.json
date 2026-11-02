@@ -139,6 +139,104 @@
     "en": "English",
     "es": "Español"
   },
+  "Legal": {
+    "updated": "Last updated {date}",
+    "nav": "Legal",
+    "footer": "The Bible texts are in the public domain."
+  },
+  "Privacy": {
+    "title": "Privacy Policy",
+    "intro": "Bible is a free website for reading the Bible, with no ads. This policy explains what information it keeps and why.",
+    "sections": [
+      {
+        "title": "Reading without an account",
+        "paragraphs": [
+          "You can read without an account. Your reading progress and settings are then saved only in your browser’s storage on your device and are never sent to us."
+        ]
+      },
+      {
+        "title": "What we store when you have an account",
+        "paragraphs": [
+          "If you create an account or sign in with Google, we store your name, your email address and, with Google, your profile picture.",
+          "If you sign up with an email and password, we store your password only as a secure one-way hash; nobody can read it.",
+          "To sync your reading between devices, we store which chapters you have marked as read and your last reading position, with the time of each change.",
+          "To keep your account secure, we store your active sign-in sessions, including the IP address and browser type used to sign in."
+        ]
+      },
+      {
+        "title": "How we use it",
+        "paragraphs": [
+          "Only to sign you in and to sync your reading progress between your devices. We don’t show ads, we don’t sell or share your information, and we don’t use analytics or tracking."
+        ]
+      },
+      {
+        "title": "Google sign-in",
+        "paragraphs": [
+          "When you sign in with Google, Google shares your name, email address and profile picture with us. We don’t request access to anything else in your Google account.",
+          "Our use of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements."
+        ]
+      },
+      {
+        "title": "Cookies and local storage",
+        "paragraphs": [
+          "We use one essential cookie to keep you signed in. Your settings and the progress on each device are kept in your browser’s local storage."
+        ]
+      },
+      {
+        "title": "Where your data is stored",
+        "paragraphs": [
+          "The website is hosted by Vercel, and account data is stored in a database run by Neon, both in the United States."
+        ]
+      },
+      {
+        "title": "Deleting your data",
+        "paragraphs": [
+          "You can delete your account at any time from the account menu. This permanently removes your account, your sessions and your synced progress. Progress saved in your browser stays on that device until you reset it in reading settings or clear your browser data."
+        ]
+      },
+      {
+        "title": "Contact",
+        "paragraphs": [
+          "For questions or requests about your data, write to fabiojosue16@gmail.com. If this policy changes, the date above will be updated."
+        ]
+      }
+    ]
+  },
+  "Terms": {
+    "title": "Terms of Service",
+    "intro": "By using Bible, you agree to these terms.",
+    "sections": [
+      {
+        "title": "The service",
+        "paragraphs": [
+          "Bible is a free website for reading the Bible and keeping track of your reading. It is provided as is, without warranties of any kind, and it may change or stop at any time."
+        ]
+      },
+      {
+        "title": "Bible texts",
+        "paragraphs": [
+          "The World English Bible and the Reina-Valera 1909 are in the public domain."
+        ]
+      },
+      {
+        "title": "Your account",
+        "paragraphs": [
+          "You are responsible for keeping your password safe. Don’t misuse the service, for example by trying to access other people’s accounts or by disrupting the website.",
+          "You can delete your account at any time. Accounts that misuse the service may be suspended."
+        ]
+      },
+      {
+        "title": "Liability",
+        "paragraphs": [
+          "To the extent permitted by law, we are not liable for any loss arising from your use of the service, including lost reading progress."
+        ]
+      },
+      {
+        "title": "Contact",
+        "paragraphs": ["For questions about these terms, write to fabiojosue16@gmail.com."]
+      }
+    ]
+  },
   "NotFound": {
     "title": "Page not found",
     "body": "That passage or page doesn’t exist.",

@@ -139,6 +139,102 @@
     "en": "English",
     "es": "Español"
   },
+  "Legal": {
+    "updated": "Última actualización: {date}",
+    "nav": "Legal",
+    "footer": "Los textos bíblicos son de dominio público."
+  },
+  "Privacy": {
+    "title": "Política de privacidad",
+    "intro": "Biblia es un sitio web gratuito para leer la Biblia, sin anuncios. Esta política explica qué información guarda y por qué.",
+    "sections": [
+      {
+        "title": "Leer sin una cuenta",
+        "paragraphs": [
+          "Puedes leer sin una cuenta. En ese caso, tu progreso y tus ajustes se guardan solo en el almacenamiento de tu navegador, en tu dispositivo, y nunca se nos envían."
+        ]
+      },
+      {
+        "title": "Qué guardamos cuando tienes una cuenta",
+        "paragraphs": [
+          "Si creas una cuenta o inicias sesión con Google, guardamos tu nombre, tu correo electrónico y, con Google, tu foto de perfil.",
+          "Si te registras con correo y contraseña, guardamos tu contraseña solo como un hash seguro de un solo sentido; nadie puede leerla.",
+          "Para sincronizar tu lectura entre dispositivos, guardamos qué capítulos marcaste como leídos y tu última posición de lectura, con la hora de cada cambio.",
+          "Para mantener segura tu cuenta, guardamos tus sesiones activas, incluida la dirección IP y el tipo de navegador con que iniciaste sesión."
+        ]
+      },
+      {
+        "title": "Cómo la usamos",
+        "paragraphs": [
+          "Solo para iniciar tu sesión y sincronizar tu progreso de lectura entre tus dispositivos. No mostramos anuncios, no vendemos ni compartimos tu información y no usamos analíticas ni rastreo."
+        ]
+      },
+      {
+        "title": "Inicio de sesión con Google",
+        "paragraphs": [
+          "Cuando inicias sesión con Google, Google nos comparte tu nombre, tu correo electrónico y tu foto de perfil. No pedimos acceso a nada más de tu cuenta de Google.",
+          "El uso que hacemos de la información recibida de las API de Google cumple la Política de Datos de Usuario de los Servicios de API de Google, incluidos los requisitos de Uso Limitado."
+        ]
+      },
+      {
+        "title": "Cookies y almacenamiento local",
+        "paragraphs": [
+          "Usamos una única cookie esencial para mantener tu sesión iniciada. Tus ajustes y el progreso de cada dispositivo se guardan en el almacenamiento local de tu navegador."
+        ]
+      },
+      {
+        "title": "Dónde se guardan tus datos",
+        "paragraphs": [
+          "El sitio está alojado en Vercel y los datos de las cuentas se guardan en una base de datos de Neon, ambos en Estados Unidos."
+        ]
+      },
+      {
+        "title": "Borrar tus datos",
+        "paragraphs": [
+          "Puedes borrar tu cuenta en cualquier momento desde el menú de la cuenta. Esto elimina de forma permanente tu cuenta, tus sesiones y tu progreso sincronizado. El progreso guardado en tu navegador se queda en ese dispositivo hasta que lo restablezcas en los ajustes de lectura o borres los datos del navegador."
+        ]
+      },
+      {
+        "title": "Contacto",
+        "paragraphs": [
+          "Para preguntas o solicitudes sobre tus datos, escribe a fabiojosue16@gmail.com. Si esta política cambia, se actualizará la fecha de arriba."
+        ]
+      }
+    ]
+  },
+  "Terms": {
+    "title": "Términos del servicio",
+    "intro": "Al usar Biblia, aceptas estos términos.",
+    "sections": [
+      {
+        "title": "El servicio",
+        "paragraphs": [
+          "Biblia es un sitio web gratuito para leer la Biblia y llevar el registro de tu lectura. Se ofrece tal cual, sin garantías de ningún tipo, y puede cambiar o dejar de funcionar en cualquier momento."
+        ]
+      },
+      {
+        "title": "Textos bíblicos",
+        "paragraphs": ["La World English Bible y la Reina-Valera 1909 son de dominio público."]
+      },
+      {
+        "title": "Tu cuenta",
+        "paragraphs": [
+          "Eres responsable de mantener segura tu contraseña. No hagas un mal uso del servicio, por ejemplo intentando acceder a cuentas de otras personas o interrumpiendo el sitio.",
+          "Puedes borrar tu cuenta en cualquier momento. Las cuentas que hagan mal uso del servicio pueden ser suspendidas."
+        ]
+      },
+      {
+        "title": "Responsabilidad",
+        "paragraphs": [
+          "En la medida en que la ley lo permita, no somos responsables de ninguna pérdida derivada del uso del servicio, incluida la pérdida del progreso de lectura."
+        ]
+      },
+      {
+        "title": "Contacto",
+        "paragraphs": ["Para preguntas sobre estos términos, escribe a fabiojosue16@gmail.com."]
+      }
+    ]
+  },
   "NotFound": {
     "title": "Página no encontrada",
     "body": "Ese pasaje o página no existe.",

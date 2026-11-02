@@ -3,7 +3,7 @@ import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { BOOKS, bookName, type Testament } from "@/features/bible/books";
-import { bookPath, chapterPath } from "@/features/bible/routes";
+import { bookPath, chapterPath, PAGE_PATHS } from "@/features/bible/routes";
 import { translationForLocale } from "@/features/bible/translations";
 import {
   BookReadCount,
@@ -107,6 +107,24 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           </div>
         ))}
       </section>
+
+      <footer className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t pt-6 text-sm text-muted-foreground">
+        <span>{t("Legal.footer")}</span>
+        <nav aria-label={t("Legal.nav")} className="flex gap-4 sm:ml-auto">
+          <Link
+            href={PAGE_PATHS.privacy}
+            className="underline-offset-4 hover:text-foreground hover:underline"
+          >
+            {t("Privacy.title")}
+          </Link>
+          <Link
+            href={PAGE_PATHS.terms}
+            className="underline-offset-4 hover:text-foreground hover:underline"
+          >
+            {t("Terms.title")}
+          </Link>
+        </nav>
+      </footer>
     </div>
   );
 }

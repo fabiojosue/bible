@@ -22,6 +22,19 @@ test.describe("routing", () => {
     expect(response?.status()).toBe(404);
     await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
   });
+
+  test("links to the privacy policy and terms from the home page", async ({ page }) => {
+    await page.goto("/es");
+    const legal = page.getByRole("navigation", { name: "Legal" });
+    await legal.getByRole("link", { name: "Política de privacidad" }).click();
+    await expect(page).toHaveURL(/\/es\/privacy$/);
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Política de privacidad" }),
+    ).toBeVisible();
+    const response = await page.goto("/en/terms");
+    expect(response?.status()).toBe(200);
+    await expect(page.getByRole("heading", { level: 1, name: "Terms of Service" })).toBeVisible();
+  });
 });
 
 test.describe("layout", () => {

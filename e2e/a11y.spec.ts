@@ -1,7 +1,15 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "./fixtures";
 
-const PAGES = ["/en", "/es", "/en/genesis", "/en/john/3", "/es/salmos/23"];
+const PAGES = [
+  "/en",
+  "/es",
+  "/en/genesis",
+  "/en/john/3",
+  "/es/salmos/23",
+  "/en/privacy",
+  "/es/terms",
+];
 
 for (const path of PAGES) {
   for (const theme of ["dark", "light"] as const) {

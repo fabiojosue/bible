@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
-import { parsePath } from "./features/bible/routes";
+import { isPagePath, parsePath } from "./features/bible/routes";
 import { routing } from "./i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
@@ -16,7 +16,7 @@ function isUnknownPassage(pathname: string): boolean {
   if (!match) return false;
   const locale = match[1] as (typeof routing.locales)[number];
   const rest = match[2] ?? "/";
-  return rest !== "/" && !parsePath(rest, locale);
+  return rest !== "/" && !isPagePath(rest) && !parsePath(rest, locale);
 }
 
 export default function proxy(request: NextRequest) {
