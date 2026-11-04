@@ -1,5 +1,6 @@
 "use client";
 
+import { BookOpenIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -144,8 +145,14 @@ function TourDialog() {
   }, [step]);
 
   const placed = cardPosition !== null;
+  // Gliding is enabled a frame after the first placement; turning it on in the same
+  // frame would animate the card in from the corner.
+  const [glide, setGlide] = useState(false);
   useEffect(() => {
-    if (placed) endTourResume();
+    if (!placed) return;
+    endTourResume();
+    const frame = requestAnimationFrame(() => setGlide(true));
+    return () => cancelAnimationFrame(frame);
   }, [placed]);
   useEffect(() => endTourResume, []);
 
@@ -222,7 +229,8 @@ function TourDialog() {
           className={cn(
             "fixed z-50 grid w-[calc(100vw-1.5rem)] gap-4 rounded-xl border bg-popover p-5 text-popover-foreground shadow-2xl outline-none sm:w-80",
             // Appear in place on the first measurement; glide only between steps.
-            placed ? "transition-[top,left] duration-300 ease-out" : "opacity-0",
+            !placed && "opacity-0",
+            glide && "transition-[top,left] duration-300 ease-out",
           )}
         >
           <div className="flex items-center justify-between gap-4">
@@ -236,14 +244,36 @@ function TourDialog() {
             </DialogPrimitive.Close>
           </div>
           <div className="grid gap-1.5" aria-live="polite">
-            <DialogPrimitive.Title className="text-base font-semibold tracking-tight">
+            {step.id === "language" && (
+              <span
+                aria-hidden
+                className="mb-2 flex size-10 items-center justify-center rounded-lg border bg-muted text-foreground"
+              >
+                <BookOpenIcon className="size-5" />
+              </span>
+            )}
+            <DialogPrimitive.Title
+              className={cn(
+                "font-semibold tracking-tight",
+                step.id === "language" ? "text-xl" : "text-base",
+              )}
+            >
               {t(step.title)}
             </DialogPrimitive.Title>
-            <DialogPrimitive.Description className="text-sm text-muted-foreground">
+            <DialogPrimitive.Description className="text-sm text-pretty text-muted-foreground">
               {t(body)}
             </DialogPrimitive.Description>
             {step.id === "language" && (
-              <div className="mt-2 grid grid-cols-2 gap-2">
+              <p className="mt-3 text-sm font-medium">
+                {t("languagePrompt")}
+                <span lang={locale === "en" ? "es" : "en"} className="text-muted-foreground">
+                  {" · "}
+                  {t("languagePromptOther")}
+                </span>
+              </p>
+            )}
+            {step.id === "language" && (
+              <div className="mt-1 grid grid-cols-2 gap-2">
                 {routing.locales.map((target) => (
                   <Button
                     key={target}
