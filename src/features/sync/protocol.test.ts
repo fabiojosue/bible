@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { marksChangedSince, mergeMarks, newerPosition } from "./protocol";
+import { marksChangedSince, mergeMarks, mergeVerses, newerPosition } from "./protocol";
 
 describe("mergeMarks", () => {
   it("keeps the newer mark per chapter", () => {
@@ -24,6 +24,22 @@ describe("mergeMarks", () => {
     const current = { "GEN.1": { read: true, at: 5 } };
     expect(mergeMarks(current, { "GEN.1": { read: false, at: 5 } })).toBe(current);
     expect(mergeMarks(current, {})).toBe(current);
+  });
+});
+
+describe("mergeVerses", () => {
+  const older = { saved: true, at: 1, text: "In the beginning", translation: "web" };
+  const newer = { saved: false, at: 2, text: "In the beginning", translation: "web" };
+
+  it("keeps the newer save, including an unsave", () => {
+    expect(mergeVerses({ "GEN.1.1": older }, { "GEN.1.1": newer })).toEqual({ "GEN.1.1": newer });
+    expect(mergeVerses({ "GEN.1.1": newer }, { "GEN.1.1": older })).toEqual({ "GEN.1.1": newer });
+  });
+
+  it("returns the same object when nothing changes", () => {
+    const current = { "GEN.1.1": newer };
+    expect(mergeVerses(current, undefined)).toBe(current);
+    expect(mergeVerses(current, {})).toBe(current);
   });
 });
 

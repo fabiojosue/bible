@@ -8,9 +8,12 @@ import {
   type ChapterMark,
   type ChapterMarks,
   mergeMarks,
+  mergeVerses,
   newerPosition,
   type PositionRecord,
   type SyncResponse,
+  type VerseSave,
+  type VerseSaves,
 } from "@/features/sync/protocol";
 
 export interface ReadingPosition extends Reference {
@@ -21,6 +24,8 @@ export interface ReadingPosition extends Reference {
 interface PersistedProgress {
   /** Every chapter ever marked, including ones marked unread again. */
   readonly marks: ChapterMarks;
+  /** Every verse ever saved, including ones removed again. */
+  readonly verses: VerseSaves;
   readonly lastPosition: ReadingPosition | null;
   /** When `lastPosition` last changed, including being cleared. */
   readonly positionAt: number;
@@ -35,6 +40,12 @@ interface ProgressActions {
   savePosition: (reference: Reference & { verse: number }) => void;
   markRead: (bookId: string, chapter: number) => void;
   setRead: (bookId: string, chapter: number, read: boolean) => void;
+  /** `snapshot` is the text shown to the reader; an unsave can omit it. */
+  setVerseSaved: (
+    key: string,
+    saved: boolean,
+    snapshot?: { text: string; translation: string },
+  ) => void;
   reset: () => void;
   /** Merges the account's state from the server. */
   applyRemote: (remote: SyncResponse) => void;
@@ -65,6 +76,7 @@ export const useProgress = create<ProgressState & ProgressActions>()(
   persist(
     (set) => ({
       marks: {},
+      verses: {},
       readChapters: {},
       lastPosition: null,
       positionAt: 0,
@@ -84,21 +96,40 @@ export const useProgress = create<ProgressState & ProgressActions>()(
           if (!!state.marks[key]?.read === read) return state;
           return withMarks({ ...state.marks, [key]: { read, at: Date.now() } });
         }),
+      setVerseSaved: (key, saved, snapshot) =>
+        set((state) => {
+          const existing = state.verses[key];
+          if (!!existing?.saved === saved) return state;
+          const next: VerseSave = {
+            saved,
+            at: Date.now(),
+            text: (snapshot?.text ?? existing?.text ?? "").slice(0, 4000),
+            translation: snapshot?.translation ?? existing?.translation ?? "web",
+          };
+          return { verses: { ...state.verses, [key]: next } };
+        }),
       reset: () =>
         set((state) => {
           const now = Date.now();
           const marks: Record<string, ChapterMark> = {};
           for (const key of Object.keys(state.marks)) marks[key] = { read: false, at: now };
-          return { ...withMarks(marks), lastPosition: null, positionAt: now };
+          const verses: Record<string, VerseSave> = {};
+          for (const [key, save] of Object.entries(state.verses)) {
+            verses[key] = { ...save, saved: false, at: now };
+          }
+          return { ...withMarks(marks), verses, lastPosition: null, positionAt: now };
         }),
       applyRemote: (remote) =>
         set((state) => {
           const marks = mergeMarks(state.marks, remote.marks);
+          const verses = mergeVerses(state.verses, remote.verses);
           const current = positionRecordOf(state);
           const position = newerPosition(current, remote.position);
-          if (marks === state.marks && position === current) return state;
+          if (marks === state.marks && verses === state.verses && position === current)
+            return state;
           return {
             ...(marks === state.marks ? {} : withMarks(marks)),
+            ...(verses === state.verses ? {} : { verses }),
             ...(position && position !== current
               ? {
                   lastPosition: position.position && {
@@ -113,10 +144,11 @@ export const useProgress = create<ProgressState & ProgressActions>()(
     }),
     {
       name: "bible:progress",
-      version: 2,
+      version: 3,
       storage: createJSONStorage(() => localStorage),
-      partialize: ({ marks, lastPosition, positionAt }): PersistedProgress => ({
+      partialize: ({ marks, verses, lastPosition, positionAt }): PersistedProgress => ({
         marks,
+        verses,
         lastPosition,
         positionAt,
       }),
@@ -130,14 +162,16 @@ export const useProgress = create<ProgressState & ProgressActions>()(
           for (const [key, at] of Object.entries(v1.readChapters ?? {}))
             marks[key] = { read: true, at };
           const lastPosition = v1.lastPosition ?? null;
-          return { marks, lastPosition, positionAt: lastPosition?.updatedAt ?? 0 };
+          return { marks, verses: {}, lastPosition, positionAt: lastPosition?.updatedAt ?? 0 };
         }
-        return persisted as PersistedProgress;
+        const saved = persisted as PersistedProgress;
+        if (version < 3) return { ...saved, verses: saved.verses ?? {} };
+        return saved;
       },
       merge: (persisted, current) => {
         const saved = persisted as Partial<PersistedProgress> | undefined;
         const marks = saved?.marks ?? current.marks;
-        return { ...current, ...saved, ...withMarks(marks) };
+        return { ...current, ...saved, ...withMarks(marks), verses: saved?.verses ?? {} };
       },
     },
   ),

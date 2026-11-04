@@ -1,8 +1,8 @@
 import "server-only";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { chapterMark, readingPosition } from "@/db/schema";
-import type { ChapterMark, PositionRecord, SyncRequest, SyncResponse } from "./protocol";
+import { chapterMark, readingPosition, verseSave } from "@/db/schema";
+import type { ChapterMark, PositionRecord, SyncRequest, SyncResponse, VerseSave } from "./protocol";
 
 /** Applies the device's changes (newest wins) and returns the account's merged state. */
 export async function syncProgress(userId: string, request: SyncRequest): Promise<SyncResponse> {
@@ -11,6 +11,14 @@ export async function syncProgress(userId: string, request: SyncRequest): Promis
     chapterKey: key,
     read: mark.read,
     updatedAt: mark.at,
+  }));
+  const verses = Object.entries(request.verses ?? {}).map(([key, save]) => ({
+    userId,
+    verseKey: key,
+    saved: save.saved,
+    text: save.text,
+    translation: save.translation,
+    updatedAt: save.at,
   }));
 
   await db.transaction(async (tx) => {
@@ -22,6 +30,21 @@ export async function syncProgress(userId: string, request: SyncRequest): Promis
           target: [chapterMark.userId, chapterMark.chapterKey],
           set: { read: sql`excluded.read`, updatedAt: sql`excluded.updated_at` },
           setWhere: sql`excluded.updated_at > ${chapterMark.updatedAt}`,
+        });
+    }
+    if (verses.length) {
+      await tx
+        .insert(verseSave)
+        .values(verses)
+        .onConflictDoUpdate({
+          target: [verseSave.userId, verseSave.verseKey],
+          set: {
+            saved: sql`excluded.saved`,
+            text: sql`excluded.text`,
+            translation: sql`excluded.translation`,
+            updatedAt: sql`excluded.updated_at`,
+          },
+          setWhere: sql`excluded.updated_at > ${verseSave.updatedAt}`,
         });
     }
     if (request.position) {
@@ -48,16 +71,36 @@ export async function syncProgress(userId: string, request: SyncRequest): Promis
     }
   });
 
-  const [rows, positions] = await Promise.all([
+  const [rows, positions, verseRows] = await Promise.all([
     db
       .select({ key: chapterMark.chapterKey, read: chapterMark.read, at: chapterMark.updatedAt })
       .from(chapterMark)
       .where(eq(chapterMark.userId, userId)),
     db.select().from(readingPosition).where(eq(readingPosition.userId, userId)).limit(1),
+    db
+      .select({
+        key: verseSave.verseKey,
+        saved: verseSave.saved,
+        text: verseSave.text,
+        translation: verseSave.translation,
+        at: verseSave.updatedAt,
+      })
+      .from(verseSave)
+      .where(eq(verseSave.userId, userId)),
   ]);
 
   const merged: Record<string, ChapterMark> = {};
   for (const row of rows) merged[row.key] = { read: row.read, at: row.at };
+
+  const savedVerses: Record<string, VerseSave> = {};
+  for (const row of verseRows) {
+    savedVerses[row.key] = {
+      saved: row.saved,
+      at: row.at,
+      text: row.text,
+      translation: row.translation,
+    };
+  }
 
   const stored = positions[0];
   let position: PositionRecord | null = null;
@@ -70,5 +113,5 @@ export async function syncProgress(userId: string, request: SyncRequest): Promis
       at: stored.updatedAt,
     };
   }
-  return { marks: merged, position };
+  return { marks: merged, verses: savedVerses, position };
 }

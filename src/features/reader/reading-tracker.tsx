@@ -1,9 +1,10 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { verseAnchor } from "@/features/bible/routes";
 import { useProgress } from "@/features/progress/store";
 import { focusVerse, onVerseFocusRequest, verseFromHash } from "./verse-focus";
+import { VerseActions } from "./verse-actions";
 
 /** Distance from the top of the viewport at which a verse counts as "being read". */
 const READING_LINE = 96;
@@ -47,6 +48,18 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
   const markRead = useProgress((state) => state.markRead);
   const containerRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const [selected, setSelected] = useState<{ verse: number; text: string } | null>(null);
+  const selectedRef = useRef(selected);
+  const locationKey = `${bookId}.${chapter}`;
+  const [seenLocation, setSeenLocation] = useState(locationKey);
+  if (seenLocation !== locationKey) {
+    setSeenLocation(locationKey);
+    setSelected(null);
+  }
+
+  useEffect(() => {
+    selectedRef.current = selected;
+  }, [selected]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -68,7 +81,21 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
         .querySelector<HTMLElement>(`[id="${verseAnchor(anchor)}"]`)
         ?.scrollIntoView({ block: "start" });
     });
+    const markSelected = () => {
+      const current = selectedRef.current?.verse;
+      for (const element of container.querySelectorAll<HTMLElement>("[data-selected]")) {
+        element.removeAttribute("data-selected");
+      }
+      if (current) {
+        container
+          .querySelector<HTMLElement>(`[data-verse="${current}"]`)
+          ?.setAttribute("data-selected", "true");
+      }
+    };
     layoutObserver.observe(container, { childList: true, subtree: true });
+    const selectionObserver = new MutationObserver(markSelected);
+    selectionObserver.observe(container, { childList: true, subtree: true });
+    markSelected();
 
     let frame = 0;
     let timer: number | undefined;
@@ -89,11 +116,33 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
     return () => {
       window.removeEventListener("scroll", onScroll);
       layoutObserver.disconnect();
+      selectionObserver.disconnect();
       stopFocusRequests();
       if (frame) cancelAnimationFrame(frame);
       window.clearTimeout(timer);
     };
   }, [bookId, chapter, savePosition]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    for (const element of container.querySelectorAll<HTMLElement>("[data-selected]")) {
+      element.removeAttribute("data-selected");
+    }
+    if (!selected) return;
+    container
+      .querySelector<HTMLElement>(`[data-verse="${selected.verse}"]`)
+      ?.setAttribute("data-selected", "true");
+  }, [selected]);
+
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelected(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selected]);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -119,9 +168,34 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
 
   return (
     <>
-      <div ref={containerRef} className={className}>
+      <div
+        ref={containerRef}
+        className={className}
+        onClick={(event) => {
+          const verse = (event.target as HTMLElement).closest<HTMLElement>("[data-verse]");
+          if (!verse || !containerRef.current?.contains(verse)) return;
+          if (window.getSelection()?.toString()) return;
+          const number = Number(verse.dataset.verse);
+          if (!number) return;
+          const text =
+            verse.querySelector("[data-verse-text]")?.textContent?.replace(/\s+/g, " ").trim() ??
+            "";
+          if (!text) return;
+          setSelected({ verse: number, text });
+          verse.scrollIntoView({ block: "nearest" });
+        }}
+      >
         {children}
       </div>
+      {selected && (
+        <VerseActions
+          bookId={bookId}
+          chapter={chapter}
+          verse={selected.verse}
+          text={selected.text}
+          onClose={() => setSelected(null)}
+        />
+      )}
       <div ref={sentinelRef} aria-hidden className="h-px" />
     </>
   );

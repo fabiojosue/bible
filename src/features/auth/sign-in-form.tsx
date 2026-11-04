@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { type FormEvent, useId, useState } from "react";
+import { type FormEvent, useEffect, useId, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -176,6 +176,13 @@ export function SignInForm() {
   const [mode, setMode] = useState<Mode>("signIn");
   const [googlePending, setGooglePending] = useState(false);
   const callbackError = searchParams.get("error");
+
+  // Going back from Google restores this page with the button still spinning.
+  useEffect(() => {
+    const reset = () => setGooglePending(false);
+    window.addEventListener("pageshow", reset);
+    return () => window.removeEventListener("pageshow", reset);
+  }, []);
 
   if (session) {
     return (

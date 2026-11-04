@@ -1,7 +1,12 @@
 "use client";
 
 import { positionRecordOf, useProgress } from "@/features/progress/store";
-import { marksChangedSince, type SyncRequest, type SyncResponse } from "./protocol";
+import {
+  marksChangedSince,
+  type SyncRequest,
+  type SyncResponse,
+  versesChangedSince,
+} from "./protocol";
 import { useSync } from "./store";
 
 /** Waits for a burst of changes (e.g. scrolling) to settle before syncing. */
@@ -20,12 +25,17 @@ function pendingChanges(): SyncRequest {
   const position = positionRecordOf(progress);
   return {
     marks: marksChangedSince(progress.marks, pushedUpTo),
+    verses: versesChangedSince(progress.verses, pushedUpTo),
     ...(position && position.at > pushedUpTo ? { position } : {}),
   };
 }
 
 function hasChanges(request: SyncRequest): boolean {
-  return request.position !== undefined || Object.keys(request.marks).length > 0;
+  return (
+    request.position !== undefined ||
+    Object.keys(request.marks).length > 0 ||
+    Object.keys(request.verses ?? {}).length > 0
+  );
 }
 
 async function run(keepalive: boolean): Promise<void> {
@@ -86,7 +96,13 @@ export function startSync(userId: string): () => void {
   };
   const unsubscribe = useProgress.subscribe((state, previous) => {
     if (applyingRemote) return;
-    if (state.marks !== previous.marks || state.positionAt !== previous.positionAt) schedule();
+    if (
+      state.marks !== previous.marks ||
+      state.verses !== previous.verses ||
+      state.positionAt !== previous.positionAt
+    ) {
+      schedule();
+    }
   });
   const onVisibility = () => {
     if (document.visibilityState === "visible") {

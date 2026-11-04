@@ -4,7 +4,7 @@ test.use({ withTour: true });
 
 test("guides first-time visitors once", async ({ page }) => {
   await page.goto("/en/john/3");
-  const tour = page.getByRole("dialog", { name: "Welcome" });
+  const tour = page.getByRole("dialog", { name: "Choose your language" });
   await expect(tour).toBeVisible();
 
   const steps = Number(
@@ -26,7 +26,7 @@ test("guides first-time visitors once", async ({ page }) => {
 
 test("can be skipped with Escape and replayed from search", async ({ page }) => {
   await page.goto("/en");
-  await expect(page.getByRole("dialog", { name: "Welcome" })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Choose your language" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toBeHidden();
 
@@ -35,14 +35,24 @@ test("can be skipped with Escape and replayed from search", async ({ page }) => 
     .first()
     .click();
   await page.getByRole("option", { name: "Show the quick tour again" }).click();
-  await expect(page.getByRole("dialog", { name: "Welcome" })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Choose your language" })).toBeVisible();
 });
 
 test("spotlights only visible targets", async ({ page }) => {
   await page.goto("/en/john/3");
-  await expect(page.getByRole("dialog", { name: "Welcome" })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Choose your language" })).toBeVisible();
+  await page.getByRole("button", { name: "Next" }).click();
   await page.getByRole("button", { name: "Next" }).click();
   // The spotlight should sit on a rendered element, never at the origin of a hidden one.
   const box = await page.locator("[aria-hidden].ring-2").boundingBox();
   expect(box && box.width > 20 && box.height > 20).toBeTruthy();
+});
+
+test("continues in the language picked on the first step", async ({ page }) => {
+  await page.goto("/en/john/3");
+  const tour = page.getByRole("dialog", { name: "Choose your language" });
+  await expect(tour).toBeVisible();
+  await tour.getByRole("button", { name: "Español" }).click();
+  await expect(page).toHaveURL(/\/es\/juan\/3$/);
+  await expect(page.getByRole("dialog", { name: "Bienvenido" })).toBeVisible();
 });

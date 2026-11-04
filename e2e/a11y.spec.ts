@@ -11,6 +11,7 @@ const PAGES = [
   "/es/terms",
   "/en/sign-in",
   "/es/sign-in",
+  "/en/saved",
 ];
 
 for (const path of PAGES) {

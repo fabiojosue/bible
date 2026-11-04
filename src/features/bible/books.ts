@@ -76,3 +76,20 @@ export function adjacentChapter(reference: Reference, direction: -1 | 1): Refere
 export function chapterKey(bookId: string, chapter: number): string {
   return `${bookId}.${chapter}`;
 }
+
+/** Stable key for a verse, e.g. `JHN.3.16`. */
+export function verseKey(bookId: string, chapter: number, verse: number): string {
+  return `${chapterKey(bookId, chapter)}.${verse}`;
+}
+
+/** The longest chapter (Psalm 119) has 176 verses. */
+export const MAX_VERSE_NUMBER = 200;
+
+export function parseVerseKey(key: string): Reference | undefined {
+  const [bookId, chapter, verse, ...rest] = key.split(".");
+  if (!bookId || !chapter || !verse || rest.length) return undefined;
+  const reference = { bookId, chapter: Number(chapter), verse: Number(verse) };
+  if (!isValidReference(reference) || reference.verse! > MAX_VERSE_NUMBER) return undefined;
+  if (verseKey(bookId, reference.chapter, reference.verse!) !== key) return undefined;
+  return reference;
+}

@@ -1,11 +1,11 @@
-import { ArrowRightIcon } from "lucide-react";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { SavedWhere, SyncPrompt } from "@/features/auth/sync-prompt";
 import { BOOKS, bookName, type Testament } from "@/features/bible/books";
-import { bookPath, chapterPath, PAGE_PATHS } from "@/features/bible/routes";
+import { bookPath, PAGE_PATHS } from "@/features/bible/routes";
 import { translationForLocale } from "@/features/bible/translations";
+import { HomeSuggestions } from "@/features/progress/home-suggestions";
 import {
   BookReadCount,
   ContinueReading,
@@ -23,19 +23,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const t = await getTranslations();
   const translation = translationForLocale(locale);
 
-  const starts = [
-    {
-      href: chapterPath({ bookId: "GEN", chapter: 1 }, locale),
-      title: t("Home.startGenesis"),
-      hint: t("Home.startGenesisHint"),
-    },
-    {
-      href: chapterPath({ bookId: "JHN", chapter: 1 }, locale),
-      title: t("Home.startJohn"),
-      hint: t("Home.startJohnHint"),
-    },
-  ];
-
   return (
     <div className="mx-auto grid max-w-4xl gap-12 px-5 py-10 sm:px-8 lg:py-16">
       <header className="grid gap-3">
@@ -50,30 +37,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
 
       <ContinueReading />
 
-      <section aria-labelledby="start-title" className="grid gap-3">
-        <h2 id="start-title" className="text-sm font-medium text-muted-foreground">
-          {t("Home.startTitle")}
-        </h2>
-        <ul className="grid gap-3 sm:grid-cols-2">
-          {starts.map((start) => (
-            <li key={start.href}>
-              <Link
-                href={start.href}
-                className="group flex h-full items-center justify-between gap-4 rounded-xl border bg-card p-5 transition-colors outline-none hover:bg-accent focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                <span className="grid gap-1">
-                  <span className="font-medium">{start.title}</span>
-                  <span className="text-sm text-muted-foreground">{start.hint}</span>
-                </span>
-                <ArrowRightIcon
-                  aria-hidden
-                  className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5"
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <HomeSuggestions />
 
       <section aria-labelledby="progress-title" className="grid gap-3">
         <h2 id="progress-title" className="text-sm font-medium text-muted-foreground">

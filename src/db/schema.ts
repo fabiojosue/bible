@@ -104,6 +104,24 @@ export const chapterMark = pgTable(
   (table) => [primaryKey({ columns: [table.userId, table.chapterKey] })],
 );
 
+/** A saved verse. `saved: false` is a tombstone so an unsave reaches other devices. */
+export const verseSave = pgTable(
+  "verse_save",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    /** `${bookId}.${chapter}.${verse}`, e.g. `JHN.3.16`. */
+    verseKey: text("verse_key").notNull(),
+    saved: boolean("saved").notNull(),
+    /** The verse text at the time it was saved, so every device can show it offline. */
+    text: text("text").notNull(),
+    translation: text("translation").notNull(),
+    updatedAt: bigint("updated_at", { mode: "number" }).notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.userId, table.verseKey] })],
+);
+
 /** Where the reader left off. Null book means the position was cleared. */
 export const readingPosition = pgTable("reading_position", {
   userId: text("user_id")

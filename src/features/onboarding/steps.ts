@@ -15,6 +15,8 @@ export interface TourStep {
 }
 
 export const TOUR_STEPS: readonly TourStep[] = [
+  // First, so the rest of the tour is in the language the reader actually wants.
+  { id: "language", title: "languageTitle", body: "languageBody" },
   { id: "welcome", title: "welcomeTitle", body: "welcomeBody" },
   { id: "navigator", target: "navigator", title: "navigatorTitle", body: "navigatorBody" },
   {
@@ -25,7 +27,6 @@ export const TOUR_STEPS: readonly TourStep[] = [
     bodyDesktop: "searchBodyDesktop",
   },
   { id: "settings", target: "settings", title: "settingsTitle", body: "settingsBody" },
-  { id: "language", target: "language", title: "languageTitle", body: "languageBody" },
   {
     id: "chapter-nav",
     target: "chapter-nav",

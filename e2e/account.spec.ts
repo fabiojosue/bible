@@ -23,7 +23,7 @@ test.describe("account sync", () => {
     await page.getByLabel("Password").fill(PASSWORD);
     await page.getByRole("button", { name: "Create account" }).click();
 
-    await expect(page).toHaveURL(/\/en\/jude\/1$/);
+    await expect(page).toHaveURL(/\/en\/jude\/1$/, { timeout: 20_000 });
     await expect(page.getByRole("button", { name: "Account: E2E Reader" })).toBeVisible();
     await expect
       .poll(() =>

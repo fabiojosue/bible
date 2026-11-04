@@ -10,7 +10,12 @@ import type { Reference } from "./types";
 export const verseAnchor = (verse: number) => `v${verse}`;
 
 /** Pages that aren't books. Book slugs never collide with these. */
-export const PAGE_PATHS = { privacy: "/privacy", terms: "/terms", signIn: "/sign-in" } as const;
+export const PAGE_PATHS = {
+  privacy: "/privacy",
+  terms: "/terms",
+  signIn: "/sign-in",
+  saved: "/saved",
+} as const;
 
 export function isPagePath(pathname: string): boolean {
   return (Object.values(PAGE_PATHS) as string[]).includes(pathname);

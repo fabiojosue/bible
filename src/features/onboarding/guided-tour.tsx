@@ -1,11 +1,14 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { useLocaleHref } from "@/features/shell/use-locale-href";
+import type { Locale } from "@/i18n/routing";
+import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { findTourTarget, TOUR_STEPS, type TourStep } from "./steps";
 import { useOnboarding } from "./store";
@@ -73,13 +76,41 @@ export function GuidedTour() {
 
 function TourDialog() {
   const t = useTranslations("Tour");
+  const tLanguage = useTranslations("Language");
   const finish = useOnboarding((state) => state.finish);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   const steps = useMemo<TourStep[]>(
     () => TOUR_STEPS.filter((step) => !step.requiresTarget || findTourTarget(step.target!)),
     [],
   );
-  const [index, setIndex] = useState(0);
+  const locale = useLocale();
+  const hrefFor = useLocaleHref();
+  const [index, setIndex] = useState(() => useOnboarding.getState().resumeStep ?? 0);
+
+  useEffect(() => {
+    if (useOnboarding.getState().resumeStep != null) useOnboarding.getState().clearResume();
+  }, []);
+
+  const chooseLanguage = (target: Locale) => {
+    if (target === locale) {
+      setIndex(index + 1);
+      return;
+    }
+    const next = Math.min(index + 1, steps.length - 1);
+    // Write before navigating: the persist middleware can flush after the page is gone.
+    const stored = JSON.parse(localStorage.getItem("bible:onboarding") || "{}") as {
+      state?: { completedAt?: number | null };
+    };
+    localStorage.setItem(
+      "bible:onboarding",
+      JSON.stringify({
+        state: { completedAt: stored.state?.completedAt ?? null, resumeStep: next },
+        version: 1,
+      }),
+    );
+    useOnboarding.setState({ resumeStep: next });
+    window.location.assign(hrefFor(target));
+  };
   const step = steps[index] ?? steps[0]!;
   const isLast = index === steps.length - 1;
 
@@ -186,6 +217,21 @@ function TourDialog() {
             <DialogPrimitive.Description className="text-sm text-muted-foreground">
               {t(body)}
             </DialogPrimitive.Description>
+            {step.id === "language" && (
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                {routing.locales.map((target) => (
+                  <Button
+                    key={target}
+                    variant={target === locale ? "default" : "outline"}
+                    className="h-11"
+                    aria-current={target === locale ? "true" : undefined}
+                    onClick={() => chooseLanguage(target)}
+                  >
+                    {tLanguage(target)}
+                  </Button>
+                ))}
+              </div>
+            )}
           </div>
           <div className="flex items-center justify-between gap-3">
             <ol className="flex gap-1.5" aria-hidden>

@@ -23,7 +23,9 @@ export function ChapterText({ verses }: { verses: readonly Verse[] }) {
           className="verse outline-none"
         >
           <VerseNumber number={verse.number} />
-          <VerseText text={verse.text} />
+          <span data-verse-text>
+            <VerseText text={verse.text} />
+          </span>
         </p>
       ))}
     </div>

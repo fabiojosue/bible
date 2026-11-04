@@ -161,6 +161,8 @@ test.describe("progress", () => {
     await expect(page.getByText("1 of 1,189 chapters read")).toBeVisible();
     const continueCard = page.getByRole("region", { name: "Continue reading" });
     await expect(continueCard).toContainText("Jude 1");
+    await expect(page.getByRole("heading", { name: "Up next" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Where to begin" })).toHaveCount(0);
   });
 
   test("marks a chapter read when leaving right from its end", async ({ page }) => {

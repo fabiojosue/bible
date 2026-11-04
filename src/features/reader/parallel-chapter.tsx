@@ -86,7 +86,11 @@ function ParallelChapter({ bookId, chapter, primary, secondary, children }: Chap
             >
               <p lang={primaryLang}>
                 <VerseNumber number={number} />
-                {primaryText && <VerseText text={primaryText} />}
+                {primaryText && (
+                  <span data-verse-text>
+                    <VerseText text={primaryText} />
+                  </span>
+                )}
               </p>
               <p
                 lang={secondaryLang}

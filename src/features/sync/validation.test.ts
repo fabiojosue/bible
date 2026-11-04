@@ -9,11 +9,19 @@ describe("parseSyncRequest", () => {
       marks: { "JHN.3": { read: true, at: NOW }, "PSA.150": { read: false, at: NOW - 1 } },
       position: { position: { bookId: "JHN", chapter: 3, verse: 16 }, at: NOW },
     };
-    expect(parseSyncRequest(body, NOW)).toEqual(body);
+    expect(parseSyncRequest(body, NOW)).toEqual({ ...body, verses: {} });
+  });
+
+  it("accepts a saved verse and rejects a bad one", () => {
+    const save = { saved: true, at: NOW, text: "For God so loved the world", translation: "web" };
+    expect(parseSyncRequest({ marks: {}, verses: { "JHN.3.16": save } }, NOW)?.verses).toEqual({
+      "JHN.3.16": save,
+    });
+    expect(parseSyncRequest({ marks: {}, verses: { "JHN.99.1": save } }, NOW)).toBeUndefined();
   });
 
   it("accepts an empty push and a cleared position", () => {
-    expect(parseSyncRequest({ marks: {} }, NOW)).toEqual({ marks: {} });
+    expect(parseSyncRequest({ marks: {} }, NOW)).toEqual({ marks: {}, verses: {} });
     expect(
       parseSyncRequest({ marks: {}, position: { position: null, at: NOW } }, NOW),
     ).toBeDefined();

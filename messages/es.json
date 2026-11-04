@@ -82,7 +82,7 @@
     "parallelHint": "Lee ambas traducciones versículo por versículo.",
     "replayTour": "Ver el recorrido rápido otra vez",
     "resetProgress": "Reiniciar progreso de lectura",
-    "resetConfirm": "Esto borra todos los capítulos marcados como leídos y tu última posición en este dispositivo, y también en tu cuenta si iniciaste sesión.",
+    "resetConfirm": "Esto borra todos los capítulos marcados como leídos, tus versículos guardados y tu última posición en este dispositivo, y también en tu cuenta si iniciaste sesión.",
     "resetCancel": "Cancelar",
     "resetAction": "Reiniciar",
     "resetDone": "Progreso de lectura borrado"
@@ -105,6 +105,11 @@
     "startGenesisHint": "Génesis 1 — la historia desde la creación",
     "startJohn": "Conoce a Jesús primero",
     "startJohnHint": "Juan 1 — un punto de partida común para quienes leen por primera vez",
+    "upNextTitle": "Sigue con",
+    "upNextHint": "El siguiente capítulo que no has leído",
+    "savedTitle": "Versículos guardados",
+    "savedEmpty": "Toca un versículo mientras lees para guardarlo aquí.",
+    "savedCount": "{count, plural, one {# versículo guardado} other {# versículos guardados}}",
     "yourProgress": "Tu progreso",
     "allBooks": "Todos los libros"
   },
@@ -129,13 +134,31 @@
     "searchBodyDesktop": "Escribe algo como “Juan 3:16”. Presiona Ctrl K (⌘K en Mac) en cualquier momento.",
     "settingsTitle": "Hazlo cómodo",
     "settingsBody": "Cambia el tamaño del texto, el interlineado y el tema, o lee español e inglés lado a lado.",
-    "languageTitle": "Español o inglés",
-    "languageBody": "Cambia de idioma y quédate en el mismo capítulo.",
+    "languageTitle": "Elige tu idioma",
+    "languageBody": "La lectura y este recorrido siguen tu elección. Puedes cambiarlo después desde el encabezado.",
     "chapterNavTitle": "Pasa la página",
     "chapterNavBody": "Ve al capítulo anterior o siguiente desde aquí.",
     "chapterNavBodyDesktop": "Usa estos botones o las teclas ← y → de tu teclado.",
     "progressTitle": "Recordamos dónde te quedaste",
     "progressBody": "Tu último versículo se guarda mientras lees y los capítulos se marcan como leídos al llegar al final. Vuelve cuando quieras."
+  },
+  "Verse": {
+    "save": "Guardar",
+    "saved": "Guardado",
+    "whatsapp": "WhatsApp",
+    "story": "Historia",
+    "storyFooter": "Biblia",
+    "toolbar": "Acciones para {reference}",
+    "close": "Quitar selección",
+    "storySaved": "Imagen guardada. Ábrela en Instagram y añádela a tu historia.",
+    "storyFailed": "No se pudo crear la imagen. Inténtalo de nuevo.",
+    "popupBlocked": "Permite las ventanas emergentes para abrir WhatsApp."
+  },
+  "Saved": {
+    "title": "Versículos guardados",
+    "intro": "Los versículos que tocas y guardas mientras lees. Primero los más recientes.",
+    "empty": "Aún no hay nada guardado. Abre un capítulo y toca un versículo.",
+    "remove": "Quitar"
   },
   "Language": {
     "en": "English",
@@ -210,7 +233,7 @@
         "paragraphs": [
           "Información de la cuenta: tu nombre y tu correo electrónico. Si inicias sesión con Google, también tu foto de perfil de Google y el identificador de tu cuenta de Google.",
           "Contraseña: si te registras con correo y contraseña, tu contraseña se guarda solo como un hash seguro de un solo sentido; nadie, ni siquiera nosotros, puede leerla.",
-          "Progreso de lectura: qué capítulos marcaste como leídos y tu última posición de lectura (libro, capítulo y versículo), con la hora de cada cambio.",
+          "Progreso de lectura: qué capítulos marcaste como leídos, qué versículos guardaste (incluido su texto) y tu última posición de lectura (libro, capítulo y versículo), con la hora de cada cambio.",
           "Información de sesión: para cada inicio de sesión activo, la dirección IP y el tipo de navegador (user agent) usados, y cuándo vence la sesión."
         ]
       },

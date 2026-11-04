@@ -82,7 +82,7 @@
     "parallelHint": "Reads both translations verse by verse.",
     "replayTour": "Show the quick tour again",
     "resetProgress": "Reset reading progress",
-    "resetConfirm": "This clears every chapter you marked as read and your last position on this device, and in your account if you’re signed in.",
+    "resetConfirm": "This clears every chapter you marked as read, your saved verses and your last position on this device, and in your account if you’re signed in.",
     "resetCancel": "Cancel",
     "resetAction": "Reset",
     "resetDone": "Reading progress cleared"
@@ -105,6 +105,11 @@
     "startGenesisHint": "Genesis 1 — the story from creation",
     "startJohn": "Meet Jesus first",
     "startJohnHint": "John 1 — a common starting point for first-time readers",
+    "upNextTitle": "Up next",
+    "upNextHint": "The next chapter you haven’t read",
+    "savedTitle": "Saved verses",
+    "savedEmpty": "Tap any verse while reading to keep it here.",
+    "savedCount": "{count, plural, one {# saved verse} other {# saved verses}}",
     "yourProgress": "Your progress",
     "allBooks": "All books"
   },
@@ -129,13 +134,31 @@
     "searchBodyDesktop": "Type something like “John 3:16”. Press Ctrl K (⌘K on Mac) anytime.",
     "settingsTitle": "Make it comfortable",
     "settingsBody": "Change text size, spacing and theme, or read English and Spanish side by side.",
-    "languageTitle": "English or Spanish",
-    "languageBody": "Switch languages and stay on the same chapter.",
+    "languageTitle": "Choose your language",
+    "languageBody": "The reading and this tour follow your choice. You can change it later from the header.",
     "chapterNavTitle": "Turn the page",
     "chapterNavBody": "Move to the previous or next chapter from here.",
     "chapterNavBodyDesktop": "Use these buttons, or the ← and → keys on your keyboard.",
     "progressTitle": "We remember your place",
     "progressBody": "Your last verse is saved as you read, and chapters are marked read when you reach the end. Just come back anytime."
+  },
+  "Verse": {
+    "save": "Save",
+    "saved": "Saved",
+    "whatsapp": "WhatsApp",
+    "story": "Story",
+    "storyFooter": "Bible",
+    "toolbar": "Actions for {reference}",
+    "close": "Close selection",
+    "storySaved": "Image saved. Open Instagram and add it to your story.",
+    "storyFailed": "Couldn’t create the image. Please try again.",
+    "popupBlocked": "Allow pop-ups to open WhatsApp."
+  },
+  "Saved": {
+    "title": "Saved verses",
+    "intro": "Verses you tap and save while reading. Newest first.",
+    "empty": "Nothing saved yet. Open a chapter and tap a verse.",
+    "remove": "Remove"
   },
   "Language": {
     "en": "English",
@@ -210,7 +233,7 @@
         "paragraphs": [
           "Account information: your name and email address. If you sign in with Google, also your Google profile picture and your Google account ID.",
           "Password: if you sign up with an email and password, your password is stored only as a secure one-way hash; nobody, including us, can read it.",
-          "Reading progress: which chapters you have marked as read and your last reading position (book, chapter and verse), with the time of each change.",
+          "Reading progress: which chapters you have marked as read, which verses you have saved (including their text), and your last reading position (book, chapter and verse), with the time of each change.",
           "Session information: for each active sign-in, the IP address and browser type (user agent) used, and when the session expires."
         ]
       },

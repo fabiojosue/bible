@@ -172,16 +172,26 @@
   }
 
   .verse {
-    /* Keeps linked verses clear of the sticky header. */
+    /* Clears the sticky header, and the verse action bar once one is selected. */
     scroll-margin-top: 6rem;
+    scroll-margin-bottom: 10rem;
     border-radius: 0.25rem;
     transition: background-color 600ms ease;
   }
 
+  @media (hover: hover) {
+    .verse:hover {
+      background-color: color-mix(in oklab, var(--highlight) 65%, transparent);
+    }
+  }
+
   .verse:target,
-  .verse[data-highlighted="true"] {
+  .verse[data-highlighted="true"],
+  .verse[data-selected="true"] {
     background-color: var(--highlight);
-    box-shadow: 0 0 0 0.25rem var(--highlight);
+    box-shadow:
+      inset 3px 0 0 var(--ring),
+      0 0 0 0.25rem var(--highlight);
   }
 }
 

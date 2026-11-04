@@ -46,6 +46,20 @@ describe("progress store", () => {
     expect(state.lastPosition).toEqual({ bookId: "EXO", chapter: 2, verse: 7, updatedAt: 1500 });
   });
 
+  it("saves a verse and keeps a tombstone when it is removed", () => {
+    useProgress
+      .getState()
+      .setVerseSaved("JHN.3.16", true, { text: "For God so loved", translation: "web" });
+    vi.setSystemTime(2000);
+    useProgress.getState().setVerseSaved("JHN.3.16", false);
+    expect(useProgress.getState().verses["JHN.3.16"]).toEqual({
+      saved: false,
+      at: 2000,
+      text: "For God so loved",
+      translation: "web",
+    });
+  });
+
   it("does not change state when the remote has nothing newer", () => {
     useProgress.getState().markRead("GEN", 1);
     const before = useProgress.getState();
