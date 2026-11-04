@@ -15,6 +15,8 @@ export const auth = betterAuth({
     // works on hosts registered as redirect URIs in the Google Cloud console.
     allowedHosts: [
       "localhost:*",
+      "thebiblefree.com",
+      "www.thebiblefree.com",
       "bible-blush-nine.vercel.app",
       "bible-fabiojosue.vercel.app",
       "bible-*-fabiojosue.vercel.app",
