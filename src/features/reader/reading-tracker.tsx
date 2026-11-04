@@ -11,6 +11,8 @@ const READING_LINE = 96;
 const SAVE_DELAY = 500;
 /** How long the end of the chapter must stay visible before it counts as read. */
 const COMPLETE_DELAY = 1500;
+/** How long the selected verse stays lifted before its dialog opens. */
+const SELECTION_HOLD = 1000;
 
 function currentVerse(container: HTMLElement): number | undefined {
   const verses = container.querySelectorAll<HTMLElement>("[data-verse]");
@@ -49,12 +51,14 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
   const containerRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<{ verse: number; text: string } | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const selectedRef = useRef(selected);
   const locationKey = `${bookId}.${chapter}`;
   const [seenLocation, setSeenLocation] = useState(locationKey);
   if (seenLocation !== locationKey) {
     setSeenLocation(locationKey);
     setSelected(null);
+    setDialogOpen(false);
   }
 
   useEffect(() => {
@@ -137,12 +141,18 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
 
   useEffect(() => {
     if (!selected) return;
+    const timer = window.setTimeout(() => setDialogOpen(true), SELECTION_HOLD);
+    return () => window.clearTimeout(timer);
+  }, [selected]);
+
+  useEffect(() => {
+    if (!selected || dialogOpen) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setSelected(null);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selected]);
+  }, [selected, dialogOpen]);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -181,7 +191,10 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
             verse.querySelector("[data-verse-text]")?.textContent?.replace(/\s+/g, " ").trim() ??
             "";
           if (!text) return;
-          setSelected({ verse: number, text });
+          setDialogOpen(false);
+          setSelected((current) =>
+            current?.verse === number && current.text === text ? current : { verse: number, text },
+          );
           verse.scrollIntoView({ block: "nearest" });
         }}
       >
@@ -189,11 +202,15 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
       </div>
       {selected && (
         <VerseActions
+          open={dialogOpen}
           bookId={bookId}
           chapter={chapter}
           verse={selected.verse}
           text={selected.text}
-          onClose={() => setSelected(null)}
+          onClose={() => {
+            setDialogOpen(false);
+            setSelected(null);
+          }}
         />
       )}
       <div ref={sentinelRef} aria-hidden className="h-px" />

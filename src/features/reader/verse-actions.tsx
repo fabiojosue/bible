@@ -1,10 +1,17 @@
 "use client";
 
-import { BookmarkIcon, ImageIcon, XIcon } from "lucide-react";
+import { BookmarkIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { verseKey } from "@/features/bible/books";
 import { formatReference } from "@/features/bible/reference";
 import { chapterPath } from "@/features/bible/routes";
@@ -23,17 +30,37 @@ function WhatsAppIcon() {
   );
 }
 
+function InstagramIcon() {
+  const gradientId = `ig-${useId().replace(/:/g, "")}`;
+  return (
+    <svg aria-hidden viewBox="0 0 24 24" className="size-5">
+      <defs>
+        <radialGradient id={gradientId} cx="30%" cy="110%" r="140%">
+          <stop offset="0%" stopColor="#f9ce34" />
+          <stop offset="45%" stopColor="#ee2a7b" />
+          <stop offset="100%" stopColor="#6228d7" />
+        </radialGradient>
+      </defs>
+      <rect x="2" y="2" width="20" height="20" rx="6" fill={`url(#${gradientId})`} />
+      <circle cx="12" cy="12" r="4" fill="none" stroke="white" strokeWidth="1.6" />
+      <circle cx="17.3" cy="6.7" r="1" fill="white" />
+    </svg>
+  );
+}
+
 /**
- * Shown while a verse stays selected: save it, send it on WhatsApp, or make an
- * image for an Instagram story.
+ * Opens after the verse has been highlighted: the verse itself, then save,
+ * WhatsApp, and an Instagram story image.
  */
 export function VerseActions({
+  open,
   bookId,
   chapter,
   verse,
   text,
   onClose,
 }: {
+  open: boolean;
   bookId: string;
   chapter: number;
   verse: number;
@@ -92,44 +119,35 @@ export function VerseActions({
   };
 
   return (
-    <div
-      role="toolbar"
-      aria-label={t("toolbar", { reference })}
-      className="fixed inset-x-0 z-30 border-t bg-background/95 backdrop-blur-md max-lg:bottom-[calc(4rem+env(safe-area-inset-bottom))] lg:bottom-6 lg:left-1/2 lg:w-auto lg:-translate-x-1/2 lg:rounded-xl lg:border lg:shadow-2xl"
-    >
-      <div className="mx-auto flex max-w-lg items-stretch lg:max-w-none">
-        <Button variant="ghost" className="h-14 flex-1 flex-col gap-0.5 text-xs" onClick={onSave}>
-          <BookmarkIcon aria-hidden className={saved ? "fill-current" : undefined} />
-          {saved ? t("saved") : t("save")}
-        </Button>
-        <Button
-          variant="ghost"
-          className="h-14 flex-1 flex-col gap-0.5 text-xs"
-          onClick={onWhatsApp}
-        >
-          <WhatsAppIcon />
-          {t("whatsapp")}
-        </Button>
-        <Button
-          variant="ghost"
-          className="h-14 flex-1 flex-col gap-0.5 text-xs"
-          onClick={() => void onStory()}
-          disabled={storyPending}
-          aria-busy={storyPending}
-        >
-          <ImageIcon aria-hidden />
-          {t("story")}
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon-touch"
-          className="h-14"
-          onClick={onClose}
-          aria-label={t("close")}
-        >
-          <XIcon />
-        </Button>
-      </div>
-    </div>
+    <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
+      <DialogContent className="sm:max-w-md" closeLabel={t("close")}>
+        <DialogHeader>
+          <DialogTitle>{reference}</DialogTitle>
+          <DialogDescription className="pt-1 font-serif text-lg leading-relaxed text-pretty text-foreground">
+            {text}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid grid-cols-3 gap-2">
+          <Button variant="outline" className="h-16 flex-col gap-1" onClick={onSave}>
+            <BookmarkIcon aria-hidden className={saved ? "fill-current" : undefined} />
+            {saved ? t("saved") : t("save")}
+          </Button>
+          <Button variant="outline" className="h-16 flex-col gap-1" onClick={onWhatsApp}>
+            <WhatsAppIcon />
+            {t("whatsapp")}
+          </Button>
+          <Button
+            variant="outline"
+            className="h-16 flex-col gap-1"
+            onClick={() => void onStory()}
+            disabled={storyPending}
+            aria-busy={storyPending}
+          >
+            <InstagramIcon />
+            {t("story")}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

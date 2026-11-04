@@ -148,8 +148,7 @@
     "whatsapp": "WhatsApp",
     "story": "Story",
     "storyFooter": "Bible",
-    "toolbar": "Actions for {reference}",
-    "close": "Close selection",
+    "close": "Close",
     "storySaved": "Image saved. Open Instagram and add it to your story.",
     "storyFailed": "Couldn’t create the image. Please try again.",
     "popupBlocked": "Allow pop-ups to open WhatsApp."

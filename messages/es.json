@@ -148,8 +148,7 @@
     "whatsapp": "WhatsApp",
     "story": "Historia",
     "storyFooter": "Biblia",
-    "toolbar": "Acciones para {reference}",
-    "close": "Quitar selección",
+    "close": "Cerrar",
     "storySaved": "Imagen guardada. Ábrela en Instagram y añádela a tu historia.",
     "storyFailed": "No se pudo crear la imagen. Inténtalo de nuevo.",
     "popupBlocked": "Permite las ventanas emergentes para abrir WhatsApp."

@@ -172,11 +172,14 @@
   }
 
   .verse {
-    /* Clears the sticky header, and the verse action bar once one is selected. */
+    /* Clears the sticky header when a tapped verse scrolls into view. */
     scroll-margin-top: 6rem;
-    scroll-margin-bottom: 10rem;
+    scroll-margin-bottom: 4rem;
     border-radius: 0.25rem;
-    transition: background-color 600ms ease;
+    transition:
+      background-color 400ms ease,
+      box-shadow 400ms ease,
+      transform 400ms ease;
   }
 
   @media (hover: hover) {
@@ -186,12 +189,23 @@
   }
 
   .verse:target,
-  .verse[data-highlighted="true"],
-  .verse[data-selected="true"] {
+  .verse[data-highlighted="true"] {
     background-color: var(--highlight);
+    box-shadow: 0 0 0 0.25rem var(--highlight);
+  }
+
+  /* Lifts off the page for a moment before the verse dialog opens. */
+  .verse[data-selected="true"] {
+    position: relative;
+    z-index: 2;
+    margin-inline: -0.7rem;
+    padding-inline: 0.7rem;
+    background-color: color-mix(in oklab, var(--background) 82%, var(--ring));
+    transform: translateY(-4px);
     box-shadow:
       inset 3px 0 0 var(--ring),
-      0 0 0 0.25rem var(--highlight);
+      0 1px 0 color-mix(in oklab, white 14%, transparent),
+      0 18px 36px -14px color-mix(in oklab, var(--ring) 80%, black);
   }
 }
 
