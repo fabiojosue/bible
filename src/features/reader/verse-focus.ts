@@ -21,8 +21,13 @@ export function verseFromHash(hash: string): number | undefined {
   return match ? Number(match[1]) : undefined;
 }
 
+const HIGHLIGHT_DURATION = 2400;
+/** Input that means the reader has moved on; scroll alone also fires for our own jump. */
+const MOVE_ON_EVENTS = ["wheel", "touchmove", "pointerdown", "keydown"] as const;
+
 /**
  * Scrolls to a verse, highlights it briefly and moves focus to it for assistive tech.
+ * The highlight clears as soon as the reader scrolls, taps or types.
  * Lookups are scoped to `container`: Next keeps recently visited pages mounted but
  * hidden, so ids like `v16` can exist more than once in the document.
  */
@@ -33,6 +38,13 @@ export function focusVerse(container: HTMLElement, verse: number, { smooth = tru
   element.scrollIntoView({ block: "start", behavior: smooth && !reduceMotion ? "smooth" : "auto" });
   element.focus({ preventScroll: true });
   element.dataset.highlighted = "true";
-  window.setTimeout(() => delete element.dataset.highlighted, 2400);
+
+  const clear = () => {
+    delete element.dataset.highlighted;
+    window.clearTimeout(timer);
+    for (const type of MOVE_ON_EVENTS) window.removeEventListener(type, clear);
+  };
+  const timer = window.setTimeout(clear, HIGHLIGHT_DURATION);
+  for (const type of MOVE_ON_EVENTS) window.addEventListener(type, clear, { passive: true });
   return true;
 }

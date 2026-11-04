@@ -84,6 +84,9 @@ test.describe("reading", () => {
     const verse = page.locator("#v105");
     await expect(verse).toBeInViewport();
     await expect(verse).toHaveAttribute("data-highlighted", "true");
+    await page.keyboard.press("ArrowDown");
+    await expect(verse).not.toHaveAttribute("data-highlighted");
+    await expect(verse).toHaveCSS("box-shadow", "none");
   });
 
   test("moves between chapters", async ({ page }) => {

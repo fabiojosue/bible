@@ -11,8 +11,12 @@ const READING_LINE = 96;
 const SAVE_DELAY = 500;
 /** How long the end of the chapter must stay visible before it counts as read. */
 const COMPLETE_DELAY = 1500;
+/** How long a verse must be held before it is selected; quick taps never open anything. */
+const PRESS_HOLD = 450;
+/** Movement beyond this many pixels means the reader is scrolling, not pressing. */
+const PRESS_SLOP = 8;
 /** How long the selected verse stays lifted before its dialog opens. */
-const SELECTION_HOLD = 1000;
+const LIFT_BEFORE_DIALOG = 300;
 
 function currentVerse(container: HTMLElement): number | undefined {
   const verses = container.querySelectorAll<HTMLElement>("[data-verse]");
@@ -141,9 +145,71 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
 
   useEffect(() => {
     if (!selected) return;
-    const timer = window.setTimeout(() => setDialogOpen(true), SELECTION_HOLD);
+    const timer = window.setTimeout(() => setDialogOpen(true), LIFT_BEFORE_DIALOG);
     return () => window.clearTimeout(timer);
   }, [selected]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    let press: { element: HTMLElement; x: number; y: number; timer: number } | null = null;
+    let held = false;
+
+    const cancel = () => {
+      if (!press) return;
+      window.clearTimeout(press.timer);
+      delete press.element.dataset.pressing;
+      press = null;
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      cancel();
+      held = false;
+      if (!event.isPrimary || event.button !== 0) return;
+      const element = (event.target as HTMLElement).closest<HTMLElement>("[data-verse]");
+      if (!element || !container.contains(element)) return;
+      const number = Number(element.dataset.verse);
+      if (!number) return;
+      element.dataset.pressing = "true";
+      const timer = window.setTimeout(() => {
+        cancel();
+        const text =
+          element.querySelector("[data-verse-text]")?.textContent?.replace(/\s+/g, " ").trim() ??
+          "";
+        if (!text) return;
+        held = true;
+        window.getSelection()?.removeAllRanges();
+        navigator.vibrate?.(10);
+        setDialogOpen(false);
+        setSelected({ verse: number, text });
+      }, PRESS_HOLD);
+      press = { element, x: event.clientX, y: event.clientY, timer };
+    };
+    const onPointerMove = (event: PointerEvent) => {
+      if (press && Math.hypot(event.clientX - press.x, event.clientY - press.y) > PRESS_SLOP) {
+        cancel();
+      }
+    };
+    // A completed hold would otherwise end in the phone's text-selection menu.
+    const onContextMenu = (event: Event) => {
+      if (press || held) event.preventDefault();
+    };
+
+    container.addEventListener("pointerdown", onPointerDown);
+    container.addEventListener("contextmenu", onContextMenu);
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerup", cancel);
+    window.addEventListener("pointercancel", cancel);
+    window.addEventListener("scroll", cancel, { passive: true });
+    return () => {
+      cancel();
+      container.removeEventListener("pointerdown", onPointerDown);
+      container.removeEventListener("contextmenu", onContextMenu);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", cancel);
+      window.removeEventListener("pointercancel", cancel);
+      window.removeEventListener("scroll", cancel);
+    };
+  }, []);
 
   useEffect(() => {
     if (!selected || dialogOpen) return;
@@ -178,26 +244,7 @@ export function ReadingTracker({ bookId, chapter, className, children }: Reading
 
   return (
     <>
-      <div
-        ref={containerRef}
-        className={className}
-        onClick={(event) => {
-          const verse = (event.target as HTMLElement).closest<HTMLElement>("[data-verse]");
-          if (!verse || !containerRef.current?.contains(verse)) return;
-          if (window.getSelection()?.toString()) return;
-          const number = Number(verse.dataset.verse);
-          if (!number) return;
-          const text =
-            verse.querySelector("[data-verse-text]")?.textContent?.replace(/\s+/g, " ").trim() ??
-            "";
-          if (!text) return;
-          setDialogOpen(false);
-          setSelected((current) =>
-            current?.verse === number && current.text === text ? current : { verse: number, text },
-          );
-          verse.scrollIntoView({ block: "nearest" });
-        }}
-      >
+      <div ref={containerRef} className={className}>
         {children}
       </div>
       {selected && (
