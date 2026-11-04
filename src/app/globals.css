@@ -224,6 +224,47 @@
   }
 }
 
+/*
+ * Painted before the app starts when the tour resumes after a language switch,
+ * matching the tour's backdrop so the reload doesn't flash the bare page.
+ * Fades on its own in case the tour never mounts.
+ */
+html[data-tour-resume] body::before,
+html[data-tour-resume] body::after {
+  content: "";
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  animation: tour-resume-expire 0s 4s forwards;
+}
+html[data-tour-resume] body::before {
+  inset: 0;
+  background: rgb(0 0 0 / 0.7);
+}
+html[data-tour-resume] body::after {
+  top: 50%;
+  left: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: -0.75rem 0 0 -0.75rem;
+  border: 2px solid color-mix(in oklab, white 25%, transparent);
+  border-top-color: white;
+  border-radius: 9999px;
+  animation:
+    tour-resume-spin 700ms linear infinite,
+    tour-resume-expire 0s 4s forwards;
+}
+@keyframes tour-resume-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes tour-resume-expire {
+  to {
+    visibility: hidden;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,

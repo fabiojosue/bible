@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { ONBOARDING_STORAGE_KEY } from "./resume-script";
 
 interface OnboardingState {
   completedAt: number | null;
@@ -25,7 +26,7 @@ export const useOnboarding = create<OnboardingState>()(
       clearResume: () => set({ resumeStep: null }),
     }),
     {
-      name: "bible:onboarding",
+      name: ONBOARDING_STORAGE_KEY,
       version: 1,
       storage: createJSONStorage(() => localStorage),
       partialize: ({ completedAt, resumeStep }) => ({ completedAt, resumeStep }),

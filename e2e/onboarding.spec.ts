@@ -55,4 +55,5 @@ test("continues in the language picked on the first step", async ({ page }) => {
   await tour.getByRole("button", { name: "Español" }).click();
   await expect(page).toHaveURL(/\/es\/juan\/3$/);
   await expect(page.getByRole("dialog", { name: "Bienvenido" })).toBeVisible();
+  await expect(page.locator("html")).not.toHaveAttribute("data-tour-resume");
 });

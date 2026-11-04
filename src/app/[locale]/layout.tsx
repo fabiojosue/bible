@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Providers } from "@/components/providers";
+import { TOUR_RESUME_SCRIPT } from "@/features/onboarding/resume-script";
 import { AppShell } from "@/features/shell/app-shell";
 import { READER_SETTINGS_SCRIPT } from "@/features/settings/reader-settings";
 import { routing } from "@/i18n/routing";
@@ -54,6 +55,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: READER_SETTINGS_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: TOUR_RESUME_SCRIPT }} />
       </head>
       <body className="min-h-dvh">
         <NextIntlClientProvider>

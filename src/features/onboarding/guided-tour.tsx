@@ -4,12 +4,14 @@ import { useLocale, useTranslations } from "next-intl";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useLocaleHref } from "@/features/shell/use-locale-href";
 import type { Locale } from "@/i18n/routing";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { endTourResume, ONBOARDING_STORAGE_KEY } from "./resume-script";
 import { findTourTarget, TOUR_STEPS, type TourStep } from "./steps";
 import { useOnboarding } from "./store";
 
@@ -64,7 +66,14 @@ export function GuidedTour() {
   const { open, completedAt, start } = useOnboarding();
 
   useEffect(() => {
-    if (!hydrated || completedAt !== null || open) return;
+    if (!hydrated || open) return;
+    // Back from a language switch: the page painted dimmed, so reopen right away.
+    if (useOnboarding.getState().resumeStep != null) {
+      start();
+      return;
+    }
+    endTourResume();
+    if (completedAt !== null) return;
     const timer = window.setTimeout(start, AUTO_START_DELAY);
     return () => window.clearTimeout(timer);
     // Only auto-start once per page load for first-time visitors.
@@ -86,9 +95,14 @@ function TourDialog() {
   const locale = useLocale();
   const hrefFor = useLocaleHref();
   const [index, setIndex] = useState(() => useOnboarding.getState().resumeStep ?? 0);
+  const [switchingTo, setSwitchingTo] = useState<Locale | null>(null);
 
   useEffect(() => {
     if (useOnboarding.getState().resumeStep != null) useOnboarding.getState().clearResume();
+    // Coming back to this page from history shouldn't leave the language buttons spinning.
+    const onPageShow = (event: PageTransitionEvent) => event.persisted && setSwitchingTo(null);
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
   }, []);
 
   const chooseLanguage = (target: Locale) => {
@@ -96,13 +110,14 @@ function TourDialog() {
       setIndex(index + 1);
       return;
     }
+    setSwitchingTo(target);
     const next = Math.min(index + 1, steps.length - 1);
     // Write before navigating: the persist middleware can flush after the page is gone.
-    const stored = JSON.parse(localStorage.getItem("bible:onboarding") || "{}") as {
+    const stored = JSON.parse(localStorage.getItem(ONBOARDING_STORAGE_KEY) || "{}") as {
       state?: { completedAt?: number | null };
     };
     localStorage.setItem(
-      "bible:onboarding",
+      ONBOARDING_STORAGE_KEY,
       JSON.stringify({
         state: { completedAt: stored.state?.completedAt ?? null, resumeStep: next },
         version: 1,
@@ -115,7 +130,7 @@ function TourDialog() {
   const isLast = index === steps.length - 1;
 
   const [spotlight, setSpotlight] = useState<DOMRect>();
-  const [cardPosition, setCardPosition] = useState({ top: -9999, left: -9999 });
+  const [cardPosition, setCardPosition] = useState<{ top: number; left: number } | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const primaryRef = useRef<HTMLButtonElement>(null);
 
@@ -127,6 +142,12 @@ function TourDialog() {
     if (card)
       setCardPosition(placeCard(rect, { width: card.offsetWidth, height: card.offsetHeight }));
   }, [step]);
+
+  const placed = cardPosition !== null;
+  useEffect(() => {
+    if (placed) endTourResume();
+  }, [placed]);
+  useEffect(() => endTourResume, []);
 
   useLayoutEffect(() => {
     const element = step.target ? findTourTarget(step.target) : undefined;
@@ -197,8 +218,12 @@ function TourDialog() {
           }}
           // Clicking the dimmed page shouldn't silently end the tour.
           onPointerDownOutside={(event) => event.preventDefault()}
-          style={{ top: cardPosition.top, left: cardPosition.left }}
-          className="fixed z-50 grid w-[calc(100vw-1.5rem)] gap-4 rounded-xl border bg-popover p-5 text-popover-foreground shadow-2xl transition-[top,left] duration-300 ease-out outline-none sm:w-80"
+          style={cardPosition ?? { top: 0, left: 0 }}
+          className={cn(
+            "fixed z-50 grid w-[calc(100vw-1.5rem)] gap-4 rounded-xl border bg-popover p-5 text-popover-foreground shadow-2xl outline-none sm:w-80",
+            // Appear in place on the first measurement; glide only between steps.
+            placed ? "transition-[top,left] duration-300 ease-out" : "opacity-0",
+          )}
         >
           <div className="flex items-center justify-between gap-4">
             <p className="font-mono text-xs text-muted-foreground tabular-nums">
@@ -225,8 +250,11 @@ function TourDialog() {
                     variant={target === locale ? "default" : "outline"}
                     className="h-11"
                     aria-current={target === locale ? "true" : undefined}
+                    disabled={switchingTo !== null}
+                    aria-busy={switchingTo === target}
                     onClick={() => chooseLanguage(target)}
                   >
+                    {switchingTo === target && <Spinner aria-hidden />}
                     {tLanguage(target)}
                   </Button>
                 ))}
@@ -254,6 +282,7 @@ function TourDialog() {
               <Button
                 ref={primaryRef}
                 className="h-10 sm:h-8"
+                disabled={switchingTo !== null}
                 onClick={() => (isLast ? finish() : setIndex(index + 1))}
               >
                 {isLast ? t("done") : t("next")}
